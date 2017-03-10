@@ -1,0 +1,68 @@
+#init("",["会员管理","供应商列表","添加供应商"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<style>
+	.block{margin:10px 10px}
+</style>
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">&nbsp;</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+ <div class="block">
+	 <dl>
+	  <dt>基本信息</dt>
+	  <dd>联系人：$!SupplierCompany.linker</dd>
+	  <dd>联系方式：$!SupplierCompany.linkerPhone</dd>
+	  <dd>会员类型:$!result.gradeName</dd>
+	</dl>
+</div>
+<hr style="width:100%"/>
+	 <dl  class="block">
+	  <dt>登录信息</dt>
+	  <dd>登录账号：$!result.name <a href=#>修改手机号</a><a href="#">重置密码</a></dd>
+	  <dd>邮箱：$!result.email <a href=#>修改</a></dd>
+	  <dd>添加时间时间：$velocityTool.getTime($!SupplierCompany.created)</dd>
+	</dl>
+<hr style="width:100%"/>
+<dl  class="block">
+  <dt>权限设置</dt>
+  <dd>供应商权限
+      	 <label class="radio-inline">
+	  		所有权限<input type="radio" name="gradeName"  gradeId="$obj.id"> 
+	 	 </label>
+	 	 <label class="radio-inline">
+	  		商品管理<input type="radio" name="gradeName"  gradeId="$obj.id"> 
+	 	 </label>
+	 	 <label class="radio-inline">
+	  		订单管理<input type="radio" name="gradeName"  gradeId="$obj.id"> 
+	 	 </label>
+  </dd>
+</dl>
+    <div class="form-group">
+    	<label  class="col-sm-2 control-label"></label>
+    <div class="col-sm-10 "  style="margin-top:4px" >
+		<button type="button" class="btn btn-primary" id="add" value="$result.id">确定</button>
+		<button type="button" class="btn btn-default" onclick="window.location='/member'">取消</button>
+    </div>
+    </div>
+  </div>
+</form>
+</div>
+#define($js)
+<script src="/static/javascripts/page/member/member-update.js"></script>
+<script>
+	var gn="$!result.gradeName";
+	console.log(gn);
+	if(gn.length>0){
+		$("input[gradename='"+gn+"']").attr("checked","true")
+	}
+</script>
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/supplier");
+	});
+</script>
+#end

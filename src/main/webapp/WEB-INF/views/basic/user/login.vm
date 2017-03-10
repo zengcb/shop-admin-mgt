@@ -1,0 +1,84 @@
+#set($layout="inc/blank.vm")
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<title>登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- 基础样式表文件 -->
+<link href="/static/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/static/stylesheets/animate.min.css" rel="stylesheet" type="text/css">
+<link href="/static/stylesheets/login.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/javascripts/jquery-2.1.4-min.js"></script>
+	
+<style>
+
+</style>
+</head>
+
+<!--Body-->
+<body>
+    <div class="login-container animated fadeInDown">
+        <div class="loginbox bg-white">
+            <div class="loginbox-title">登  录</div>
+            <div class="loginbox-textbox">
+                <input type="text" class="form-control" placeholder="用户名" id="userName" name="userName"/>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="password" class="form-control" placeholder="密码" id="password" name="password"/>
+            </div>
+            <div class="loginbox-submit">
+                <input id="loginBut" name="loginBut" type="button" onclick="loginSubmit()" class="btn btn-primary btn-block" value="登  录">
+            </div>
+        </div>
+        <div class="logobox"></div>
+    </div>
+
+    <!--Basic Scripts-->
+
+<script type="text/javascript">
+
+function loginSubmit()
+{
+	var userName = $("#userName").val();
+	var password = $("#password").val();
+	
+	if (userName == "")
+	{
+		$(".logobox").html('<span class="error">请输入用户名</span>');
+		
+		return;
+	}
+	
+	if (password == "")
+	{
+		$(".logobox").html('<span class="error">请输入密码</span>');
+		
+		return;
+	}
+		 $.ajax({
+			type : 'POST',
+			url : "/login",
+			data : {"userName":userName,"password":password},
+			success : function(result) {
+		    if (result == 'ok'){ 
+    			window.location.href = "/dashboard";
+    		}else {	
+        	   $(".logobox").html('<span class="error">'+result+'</span>');
+    		   return;
+    		 }
+		  }
+	  })
+	
+}
+document.onkeydown = function(e) {
+ //捕捉回车事件
+ var ev = (typeof event!= 'undefined') ? window.event : e;
+ if(ev.keyCode == 13) {
+  loginSubmit();
+ }
+}
+</script>
+
+</body>
+</html>

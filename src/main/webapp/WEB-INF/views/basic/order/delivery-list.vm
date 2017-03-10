@@ -1,0 +1,37 @@
+#init("发货管理",["订单管理","发货管理"])
+#define($css)
+ <link href="/static/javascripts/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+ <style>
+#myTab>li>a{
+ margin-right:0px;
+}
+ </style>
+#end
+
+ <div class="col-md-12">
+   <div class="panel colourable">
+	<div class="panel-body">
+	     <ul id="myTab" class="nav nav-tabs">
+	       <li class="active"  data="20"><a href="#table20" data-toggle="tab">待发货</a></li>
+	       <li data="40"><a href="#table40" data-toggle="tab">已发货</a></li>
+         </ul>
+
+<div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="table20">
+	
+	</div>
+	<div class="tab-pane fade" id="table40">
+	</div>
+</div>
+</div>
+   </div>
+</div>
+	
+#define($js)
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/static/javascripts/page/order/delivery-list.js"></script>
+<script>
+
+        </script>
+#end

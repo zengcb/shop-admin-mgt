@@ -1,0 +1,159 @@
+#init("订单列表",["订单管理","订单列表"])
+#define($css)
+  <link href="/static/javascripts/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+ <link href="/static/javascripts/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+ <style>
+#myTab>li>a{
+ margin-right:0px;
+}
+ </style>
+#end
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                    <div class="col-md-8">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-2 control-label no-padding-right no-padding-left">下单时间：</label>
+						<div class="col-md-10 row">
+						  <div class="input-daterange input-group" id="bs-datepicker-range">
+							<input type="text" class="form-control" name="beginCreateTime" id="beginCreateTime" placeholder="开始时间">
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" name="endCreateTime" id="endCreateTime" placeholder="结束时间">
+						</div>
+						</div>
+                       </div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+						<div class="form-horizontal">
+						 <div class="form-group">
+							<label class="col-md-5 control-label no-padding-right no-padding-left">收货人：</label>
+							<div class="col-md-7 row">
+							 <input type="text" class="form-control" id="receiverName">
+							</div>
+						 </div>
+						</div>
+					</div>
+            </div>
+            <div class="row" >
+                    <div class="col-md-8">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-2 control-label no-padding-right no-padding-left">付款时间：</label>
+						<div class="col-md-10 row">
+						  <div class="input-daterange input-group" id="bs-datepicker-range">
+							<input type="text" class="form-control" name="beginPaymentTime" id="beginPaymentTime" placeholder="开始时间">
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" name="endPaymentTime" id="endPaymentTime" placeholder="结束时间">
+						</div>
+						</div>
+                       </div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+						<div class="form-horizontal">
+						 <div class="form-group">
+							<label class="col-md-5 control-label no-padding-right no-padding-left">收货人手机号：</label>
+							<div class="col-md-7 row">
+							 <input type="text" class="form-control" id="receiverMobile">
+							</div>
+						 </div>
+						</div>
+					</div>
+            </div>
+			<div class="row">
+			<div class="col-md-4">
+			  <div class="form-horizontal">
+				<div class="form-group">
+			    <label class="col-md-4 control-label no-padding-right no-padding-left">订单号：</label>
+                <div class="col-md-8 row">
+					<input type="text" class="form-control" id="itemCode">
+				</div>
+				</div>
+				</div>
+				</div>
+			  <div class="col-md-4" >
+						<div class="form-horizontal">
+						 <div class="form-group">
+							<label class="col-md-4 control-label no-padding-right no-padding-left">配送单号：</label>
+							<div class="col-md-8 row">
+							 <input type="text" class="form-control" id="logisticsCode">
+							</div>
+						 </div>
+						</div>
+			   </div>
+			    <div class="col-md-4 row" style="text-align: right;">
+				    <button class="btn  btn-primary" id="serachBtn">搜索</button>
+				    <button class="btn  btn-default" id="resetBtn">重置</button>		
+					<button class="btn  btn-success" id="down">下载</button>	
+			   </div>
+			</div>
+           </div>
+			
+				
+        </div>
+	</div>
+ <div class="col-md-12">
+   <div class="panel colourable">
+	<div class="panel-body">
+	     <ul id="myTab" class="nav nav-tabs">
+	<li class="active" data="0">
+		<a href="#table0" data-toggle="tab">
+			全部订单
+		</a>
+	</li>
+	<li data="10"><a href="#table10" data-toggle="tab">未付款</a></li>
+	<li data="20"><a href="#table20" data-toggle="tab">待发货</a></li>
+	<li data="40"><a href="#table40" data-toggle="tab">已发货</a></li>
+	<li data="50"><a href="#table50" data-toggle="tab">已完成</a></li>
+	<li data="60"><a href="#table60" data-toggle="tab">已关闭</a></li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="table0">
+	</div>
+	<div class="tab-pane fade" id="table10">
+	</div>
+	<div class="tab-pane fade" id="table20">
+	</div>
+	<div class="tab-pane fade" id="table40">
+	</div>
+	<div class="tab-pane fade" id="table50">
+	</div>
+	<div class="tab-pane fade" id="table60">
+	</div>
+</div>
+</div>
+   </div>
+</div>
+	
+#define($js)
+<script src="/static/javascripts/x-editable/js/bootstrap-editable.min.js"></script>
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/static/javascripts/page/order/order-list.js"></script>
+<script>
+	$(function(){
+		$("#down").on("click",function(){
+			 var beginCreateTime =$("#beginCreateTime").val();
+	 var endCreateTime =$("#endCreateTime").val();
+	 var beginPaymentTime =$("#beginPaymentTime").val();
+	 var endPaymentTime =$("#endPaymentTime").val();
+	 var status=$("#myTab li.active").attr("data");
+	 var code = $("#itemCode").val();
+	 var receiverName=$("#receiverName").val();
+	 var receiverMobile=$("#receiverMobile").val();
+	 var logisticsCode=$("#logisticsCode").val();
+	var prefix="/order/down?";	
+	var param="beginCreateTime="+beginCreateTime+"&&endCreateTime="+endCreateTime+"&&endPaymentTime="+endPaymentTime+"&&status="+status+"&&code="+code+"&&receiverName="+receiverName;
+	param=param+"&&receiverMobile="+receiverMobile+"&&logisticsCode="+logisticsCode;
+	var url=prefix+param;
+	window.location.href=url;
+	})
+})
+</script>
+#end

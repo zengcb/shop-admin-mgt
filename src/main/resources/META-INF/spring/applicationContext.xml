@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.shop.admin.*.controller"/>
+    
+
+    <mvc:resources mapping="/static/javascripts/**" location="static/javascripts/" />
+	<mvc:resources mapping="/static/stylesheets/**" location="static/stylesheets/" />
+	<mvc:resources mapping="/static/fonts/**" location="static/fonts/" />
+	<mvc:resources mapping="/static/images/**" location="static/images/" />
+	
+    <bean id="contentNegotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false"/>
+        <property name="favorParameter" value="true"/>
+        <property name="mediaTypes">
+            <value>
+                json=application/json
+                xml=application/xml
+            </value>
+        </property>
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- JSR-303 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json; charset=UTF-8</value>
+                        <value>application/x-www-form-urlencoded; charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:default-servlet-handler/>
+
+    
+    <!-- template view -->
+    <bean id="velocityConfig"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/views/"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+                <prop key="velocimacro.library">inc/macro.vm</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="velocityViewResolver"
+          class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="layoutUrl" value="inc/layout.vm"/>
+        <property name="cache" value="false"/>
+        <property name="suffix" value=".vm"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="dateToolAttribute" value="dateTool"/>
+        <property name="numberToolAttribute" value="numberTool"/>
+        <property name="requestContextAttribute" value="req"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposePathVariables" value="true"/>
+        <property name="toolboxConfigLocation" value="WEB-INF/toolbox.xml"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+    </bean>
+
+    <!-- multipartfile upload -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5242880" />
+    </bean>
+
+    <!-- locale related -->
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="cookieName" value="_clientlocale"/>
+        <property name="defaultLocale" value="zh_CN"/>
+        <property name="cookieMaxAge" value="2147483647"/>
+    </bean>
+   <!--  <mvc:interceptors>
+     <mvc:interceptor>
+        <mvc:mapping path="/**" />
+        <mvc:exclude-mapping path="/static/**"/>
+        <bean class="com.sonnenjahr.tools.interceptor.LoginHandlerInterceptor"/>
+     </mvc:interceptor>
+   </mvc:interceptors> -->
+   
+   	<bean id="propertyConfigurer"
+        class="com.shop.admin.tools.conf.SystemPropertiesUtil" lazy-init="false">
+		<property name="locations">
+		    <list>
+		        <value>classpath:configure.properties</value>
+		    </list>
+		</property>
+     </bean>
+     
+	
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>message</value>
+			</list>
+		</property>
+	</bean>
+	<!-- <bean class="com.sonnenjahr.tools.conf.FastDFSConf" id="fastDFSConf">
+        <property name="ip" value="192.168.0.49"></property>
+        <property name="port" value="8888"></property>
+    </bean> -->
+   
+</beans>

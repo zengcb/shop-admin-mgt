@@ -1,0 +1,76 @@
+#init("供应商列表",["会员管理","供应商列表"])
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                    <div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-5 control-label no-padding-right no-padding-left">联系人：</label>
+						<div class="col-md-7 row">
+						  <input type="text" class="form-control" id="linker">
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left" style="text-indent:-20px;">联系号码：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="linkerPhone">
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left" style="text-indent:-20px;">供应商ID：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="supplierCompanyId">
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-5 control-label no-padding-right no-padding-left"  style="text-indent:-30px;">添加时间(开始)：</label>
+						<div class="col-md-7 row">
+						  <input type="text" class="form-control"  id="startRegisterTime">
+						</div>
+					 </div>
+                   </div>
+            </div>
+			<div class="row" style="margin-top:20px;">
+                    <div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-5 control-label no-padding-right no-padding-left" style="text-indent:-30px;">添加时间(结束)：</label>
+						<div class="col-md-7 row">
+						  <input type="text" class="form-control"  id="endRegisterTime">
+						</div>
+					 </div>
+                   </div>
+				   <div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left" style="text-indent:-20px;">公司名称：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control"  id="name">
+						</div>
+					 </div>
+                   </div>
+				    <div class="col-md-3">
+    						   <div class="form-horizontal" style="text-align:center;">
+    						   <button class="btn btn-primary searchBtn" type="button"><i class="fa fa-search"></i> 查询</button>
+								   <button class="btn btn-default resetBtn" type="reset" ><i class="fa fa-undo"></i> 重置</button>
+    						        <button class="btn btn-default down" type="reset">导出</button>
+    						      </div>
+				   </div>
+			</div>
+				
+            </div>
+        </div>
+	</div>
+	<div class="panel-body" >
+	  <div style="margin-bottom:20px;"><button class="btn btn-primary toAddPageBtn" type="button">新增供应商</button></div>	
+	  <div id="record"></div>
+	</div>
+#define($js)
+<script src="/static/javascripts/page/member/supplier-list.js"></script>
+#end

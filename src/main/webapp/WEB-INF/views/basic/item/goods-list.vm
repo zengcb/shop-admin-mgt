@@ -1,0 +1,126 @@
+#init("商品列表",["商品管理","商品列表"])
+#define($css)
+ <link href="/static/javascripts/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+ <link href="/static/stylesheets/bootstrap.tree.css" rel="stylesheet" type="text/css">
+ <style>
+#myTab>li>a{
+ margin-right:0px;
+}
+ </style>
+#end
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                    <div class="col-md-4">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品名称：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="itemName">
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品ID：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="itemId">
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品品牌：</label>
+						<div class="col-md-8 row">
+						  <select class="form-control" name="brandId" id="brandId">
+						   <option value="">请选择</option>
+							#foreach($brand in $brands)
+                                <option value="$brand.id">$brand.name</option>
+                            #end						   
+                         </select>
+						</div>
+					 </div>
+                    </div>
+            </div>
+               <div class="row" style="margin-top:20px;">
+                    <div class="col-md-4">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品分类：</label>
+						<div class="col-md-8 row">
+						  <select class="form-control" id="categoryId" name="categoryId">
+						   <option value="">请选择</option>
+							#foreach($category in $categorys)
+								 <optgroup label="$category.name">
+									 #foreach($childCategory in $category.children)
+										<option value="$childCategory.id" data="$childCategory.code" parentCode="$childCategory.parentCode" >$childCategory.name</option>
+									 #end
+                                 </optgroup>
+							 #end							   
+                         </select>
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">供应商：</label>
+						<div class="col-md-8 row">
+						  <select class="form-control" name="supplierCompanyId" id="supplierCompanyId">
+						   <option value="">请选择 </option>
+							#foreach($supplier in $suppliers)
+                                <option value="$supplier.id">$supplier.name</option>
+                            #end						   
+                         </select>
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="col-md-8 row">
+						  <button class="btn  btn-primary" id="serachBtn">搜索</button>
+						  <button class="btn  btn-default" id="clearBtn">重置</button>
+						</div>
+					 </div>
+                    </div>
+            </div>     
+            </div>
+			
+				
+        </div>
+	</div>
+	
+	<div class="panel-body">
+	 <div style="margin:10px 0px 20px;">               
+		<button class="btn  btn-primary" id="updateBtachStatusBtn">批量下架</button>
+		<button class="btn  btn-primary" id="deleteBtachBtn">批量删除</button>
+		<button class="btn  btn-primary" id="exportBatchBtn">商品导出</button>
+		 <button class="btn  btn-primary" id="toAddPageBtn">新增商品</button>
+	 </div>
+	     <ul id="myTab" class="nav nav-tabs">
+	<li class="active" data="0">
+		<a href="#table0" data-toggle="tab">
+			销售中
+		</a>
+	</li>
+	<li data="1"><a href="#table1" data-toggle="tab">下架中</a></li>
+	<li style="float:right;">商品总数：$totalNum</li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="table0">
+	</div>
+	<div class="tab-pane fade" id="table1">
+	</div>
+</div>
+	
+	
+</div>
+	
+#define($js)
+<script src="/static/javascripts/x-editable/js/bootstrap-editable.min.js"></script>
+<script src="/static/javascripts/page/goods-list.js"></script>
+<script>
+
+</script>
+#end

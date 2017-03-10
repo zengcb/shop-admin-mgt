@@ -1,0 +1,115 @@
+#init("",["会员管理","用户列表"])
+<style>
+	.zuoyi{
+    	text-indent:-20px;
+	}
+</style>
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">&nbsp;</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                    <div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left" style="text-indent:-20px;">手机号码：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="moblie" />
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left zuoyi" >用户ID：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="userId" />
+						</div>
+					 </div>
+                    </div>
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left zuoyi">会员名：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="name"/>
+						</div>
+					 </div>
+                    </div>
+					
+					<div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-5 control-label no-padding-right no-padding-left zuoyi" style="text-indent:-20px;">用户归属地：</label>
+						<div class="col-md-7 row">
+						 <input id="tags" style="width:120px;"/>
+						</div>
+					 </div>
+                    </div>
+                    
+            </div>
+			<div class="row" style="margin-top:20px;">
+				 <div class="col-md-3">
+					  <div class="form-horizontal">
+						<label class="col-md-4 control-label no-padding-right no-padding-left zuoyi">会员ID：</label>
+						<div class="col-md-8 row">
+						  <input type="text" class="form-control" id="memberId" value="$!memberId"/>
+						</div>
+					 </div>
+                   </div>
+				   <div class="col-md-3">
+    						   <div class="form-horizontal" style="text-align:center;">
+							   </div>
+				   </div>
+				   <div class="col-md-3">
+    						   <div class="form-horizontal" style="text-align:center;">
+							   </div>
+				   </div>
+				    <div class="col-md-3">
+    						   <div class="form-horizontal" style="text-align:center;">
+    						   <button class="btn btn-primary searchBtn" type="button"><i class="fa fa-search"></i> 查询</button>
+								   <button class="btn btn-default resetBtn" type="reset"><i class="fa fa-undo"></i> 重置</button>
+    						        <button class="btn btn-default down" type="reset">导出</button>
+    						      </div>
+				   </div>
+			</div>
+				
+            </div>
+        </div>
+	</div>
+		
+	<div class="panel-body" id="record"></div>
+#define($js)
+<script src="/static/javascripts/page/member/user-list.js"></script>
+<script type="text/javascript" src="/static/javascripts/area/AreaData_min.js"></script>
+	<script type="text/javascript" src="/static/javascripts/area/Area.js"></script>
+	<script src="/static/javascripts/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script>
+ $(function() {
+    var availableTags = [
+     		 "北京","广东",　
+     		 "山东 ","江苏 ",　
+     		 "河南" ,"上海",　
+     		"河北","浙江", 
+     		 "香港" ,"陕西",　
+     		 "湖南","重庆" ,　
+     		 "福建" , "天津", 　
+     		 "云南" , "四川",　
+     		 "广西" , "安徽",　
+     		 "海南" , "江西",　
+     		 "湖北" , "山西 ",　
+     		 "辽宁" , "台湾 ",　
+     		 "黑龙江", "内蒙古",　
+     		 "澳门", "贵州", 
+     		 "甘肃",　"青海", 
+     		 "新疆",　"西藏",　
+     		 "吉林",　"宁夏",
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+  });
+</script>
+#end

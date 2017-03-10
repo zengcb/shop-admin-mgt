@@ -1,0 +1,85 @@
+#init("发货",["订单管理","发货管理","发货"])
+#define($css)
+ <link href="/static/javascripts/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+ <style>
+#myTab>li>a{
+ margin-right:0px;
+}
+ </style>
+#end
+
+ <div class="col-md-12">
+   <div class="panel colourable">
+	<div class="panel-body">
+	<form action="/delivery/add" method="POST" id="addForm">
+		
+       <table class="table table-striped table-bordered table-hover sonnenjahrTable">
+		  #foreach($order in $orderList)
+		   #set($orderIndex=$velocityCount - 1)
+			<tr>
+			 <td style="text-align:left;background-color: #EDF0F1;">
+			  <label class="checkbox-inline">
+						<span class="lbl">订单号：$!order.code</span>
+					</label>
+                </td>
+			</tr>
+		  <tr>
+			<td style="text-align:left;">
+			 <div class="form-horizontal">
+			 <div class="form-group">
+                    <label class="col-md-2 col-sm-2 control-label no-padding-right no-padding-left" style="text-align:right;">收货信息：</label>
+                    <div class="col-md-4">
+                      <p class="form-control-static">$!order.orderShipping.receiverName,$!order.orderShipping.province $!order.orderShipping.city $!order.orderShipping.district
+					   $!order.orderShipping.receiverAddress,$!order.orderShipping.receiverMobile
+					  </p>
+                    </div>
+              </div>
+			<div class="form-group delivery-detail clone-group">
+				<input type="hidden" name="logisList[$orderIndex].orderId" value="$!order.id" >
+				<input type="hidden" name="logisList[$orderIndex].address" value="$!order.orderShipping.province $!order.orderShipping.city $!order.orderShipping.district $!order.orderShipping.receiverAddress" >
+               <label for="grid-input-2" class="col-md-2 col-sm-2 control-label no-padding-right no-padding-left" style="text-align:right;">配送公司：</label>
+               <div class="col-md-4">
+						<select  class="form-control" name="logisList[$orderIndex].name" id="logisticsName">
+                           <option value="">请选择</option>
+						   #foreach($key in $keyList)
+							<option value="$key">$key</option>
+						   #end
+						</select>
+                </div>
+			   <label for="grid-input-2" class="col-md-2 col-sm-2 control-label no-padding-right no-padding-left" style="text-align:right;">配送单号：</label>
+               <div class="col-md-4">
+                     <input type="text" class="form-control" name="logisList[$orderIndex].code" id="logisticsCode">
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="col-md-2"></div>
+				<div class="col-md-4 col-sm-4">
+				<!-- <input type="button" class="btn btn-sm btn-default cloneDeliveryBtn"  value="增加配送单">-->
+			    </div>
+              </div>
+			</div>
+			</td>
+		  </tr>
+		  #end
+	   </table>
+	   <div style="text-align:center;">
+		 <input type="button" class="btn btn-primary addDeliveryBtn"  value="保存并发货">
+		 <input type="button" class="btn btn-default" style="margin-left:10px;" onclick="history.go(-1);"  value="返回">
+	   </div>
+	  </form>
+    </div>
+  </div>
+</div>
+	
+#define($js)
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/javascripts/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/static/javascripts/page/order/delivery-add.js"></script>
+<script>
+  var imgUrl="$imgUrl";
+	var selectedParam='$!item.paramData';
+     init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/delivery/list");
+	});
+</script>
+#end

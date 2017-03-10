@@ -1,0 +1,77 @@
+#init("HS码管理",["系统管理员","HS码管理"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><h4>HS码列表</h4></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+ 
+<div class="panel-body">
+<div class="col-md-6 col-sm-6">
+	<button  class="btn btn-primary" data-toggle="modal" data-target="#myModal">导入</button>
+	<a href="#" class="btn btn-primary" id="closeAll">批量禁用</a>
+	<a href="#" class="btn btn-primary" id="openAll">批量启用</a>
+</div>
+<div class="col-md-12 col-sm-12" style="margin-top:20px">
+     <div id="record"></div>
+ </div>    
+ <div>           
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">上传excel文件</h4>
+      </div>
+      <form enctype="multipart/form-data">
+	      <div class="modal-body">
+	          <div class="form-group">
+			    <label for="originalUpload">请上传文件</label>
+			    <input type="file" id="originalUpload" name="originalUpload">
+			    <p class="help-block">excel格式为第一行第一列开始依次往下存放多个hscode即可，默认所有上传的hscode为禁用</p>
+			  </div>
+	      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary " id="upload">上传文件</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+<script src="/static/javascripts/page/admin/hscode-list.js"></script>
+<script>
+	$(function(){
+		$(document).delegate("#upload","click",function(){
+			 if($("#originalUpload").val()==""){
+			 	$.err("请选择上传文件");
+			 	return false;
+			 }
+			 $.ajaxFileUpload({  
+		        url:'/hscode/upload',
+		        secureuri:false,  
+		        fileElementId:"originalUpload",//file标签的id  
+		        data:null,//一同上传的数据 
+		        success: function (result) {
+					if(result.status=="上传成功"){
+						$.msg(result.status);
+						$('#myModal').modal('toggle');
+					}else{
+						$.err(result.status);
+					}
+	         	}
+			 });
+		})
+	})
+</script>
+#end

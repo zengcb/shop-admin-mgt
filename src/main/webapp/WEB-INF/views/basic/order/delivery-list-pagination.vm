@@ -1,0 +1,92 @@
+#set($layout="inc/blank.vm")
+#if($status==20)
+<div style="margin-bottom:10px;">
+             <div style="float:left;">
+              <label class="checkbox-inline">
+            	<input type="checkbox" id="allCheckBox" class="px"> <span class="lbl">全选</span>
+              </label>
+              <button class="btn  btn-sm btn-primary sendBatchGoodsBtn" style="margin-left:10px;">批量发货</button>
+             <!--<button class="btn  btn-sm btn-default addBatchNoteBtn" style="margin-left:10px;">批量打印发货单</button>
+              <button class="btn  btn-sm btn-default addBatchNoteBtn" style="margin-left:10px;">批量打印配送单</button>-->
+            </div>
+            <div style="float:right;">
+            </div>
+            <div style="clear:both;"></div>
+</div>
+#end
+		<table class="table table-striped table-bordered table-hover sonnenjahrTable">
+          <thead>
+            <tr style="background-color:#f7f7f7;">
+              <td>商品信息</td>
+    		  <td>收货和物流信息</td>
+            </tr>
+		</thead>
+		<tbody>
+			#if($pageBean.recordList.size()==0)
+				 <tr>
+			       <td colspan="2" style="text-align:center">无数据</td>
+		         </tr>
+			#else
+				#foreach($order in $pageBean.recordList)
+			    <tr>
+			   <th colspan="2" style="background-color: #EDF0F1;">
+                <div class="form-group" style="text-align:left;margin-bottom:0px;" data="$order.id">
+				  <div class="form-horizontal">
+					<label class="checkbox-inline">
+						<input type="checkbox" value="$order.id" class="px orderCheckBox"> <span class="lbl">订单号： $!order.code</span>
+					</label>
+					<label class="checkbox-inline">
+						<span class="lbl">下单时间： $velocityTool.getTime($!order.createTime)</span>
+					</label>
+					<label class="checkbox-inline">
+						<span class="lbl">付款时间：$velocityTool.getTime($!order.paymentTime) </span>
+					</label>
+					<label class="checkbox-inline" style="float:right;">
+					 <input type="button" class="btn btn-sm btn-primary sendGoodsBtn"  #if($order.status==20 || $order.status==30) value="发货" #else value="更新" #end >
+				    </label>
+                   </div>
+                </div>
+               </th>
+		        </tr>
+				#foreach($item in $order.itemList)
+		   	    <tr>
+                 <td style="text-align:left;">
+					<div class="row">
+				   <div class="col-md-8">
+					<img src="$!imgUrl/$!item.picPath" style="width:96px;height:96px;">
+				     <div style="display: inline-block;"><a href="#">$!item.name</a><br/>
+						<span>商品编号：$!item.id</span>
+					 </div>
+					</div>
+					<div class="col-md-4">
+						<div style="height: 96px;line-height: 96px;text-align: right;margin-right:10px;"><span style="color:red;font-size:18px;">&yen;$velocityTool.formatMoney($!item.buyPrice)</span> &times; $!item.num</div>
+					</div>
+				   </div>
+                  </td>
+				 <td style="text-align:left;width:300px;">
+					<div>
+					<label class="col-md-3 control-label" style="text-align:right;padding:0px;font-weight:normal;">收货人：</label>
+					<label class="col-md-9 control-label" style="font-weight:normal;">
+						$!order.orderShipping.receiverName,$!order.orderShipping.receiverMobile,$order.orderShipping.province
+					    $!order.orderShipping.city $!order.orderShipping.district $!order.orderShipping.receiverAddress
+					</label>
+					</div>
+					
+						#foreach($logistics in $order.logisticsList)
+							<div>
+                            <label class="col-md-3 control-label" style="text-align:right;padding:0px;font-weight:normal;">$!logistics.name：</label> 
+                            <label class="col-md-9 control-label" style="font-weight:normal;">$!logistics.code</label>
+							</div>
+						#end
+					
+				 </td>
+			    </tr>
+				#end
+			   #end
+			#end
+			 
+			  					  	
+       </tbody>
+      
+        </table>
+#pageNation($pageBean)

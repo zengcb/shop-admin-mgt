@@ -1,0 +1,57 @@
+#set($layout="inc/blank.vm")
+
+#set($purchase=$result.purchase)
+#set($itemNum=$result.itemNum)
+    <tr class="purchaseValue" style="display:none">
+		<input type="hidden" value="$!purchase.code" name="purchaseList[0].code">
+		<input type="hidden" value="$!purchase.orderCode" name="purchaseList[0].orderCode">
+		<input type="hidden" value="$!purchase.totalWeight" name="purchaseList[0].totalWeight">
+		<input type="hidden" value="$!purchase.totalVolume" name="purchaseList[0].totalVolume">
+		<input type="hidden" value="$!purchase.proportion" name="purchaseList[0].proportion">
+		<input type="hidden" value="$!purchase.preFreight" name="purchaseList[0].preFreight">
+		<input type="hidden" value="$!purchase.everyFreight" name="purchaseList[0].everyFreight">
+		<input type="hidden" value="$!purchase.totalPrice" name="purchaseList[0].totalPrice">
+		<input type="hidden" value="$!purchase.supplierCompanyId" name="purchaseList[0].supplierCompanyId">
+	</tr>	
+	#foreach($order in $purchase.orderList)
+	  #set($itemSize=$order.itemList.size())
+	  #set($orderIndex=$velocityCount)
+	  #foreach($item in $order.itemList)
+	     #if($velocityCount==1)
+			<tr>
+			  #if($orderIndex==1)
+			  <td rowspan="$itemNum">$!purchase.code</td>
+			  #end
+			  <td rowspan="$itemSize">$!order.code</td>
+			  
+			  <td>$!item.name</td>
+			  <td>$!item.skuCode</td>
+			  <td>$velocityTool.formatMoney($!item.MPrice)</td>
+			  <td>$!item.num</td>
+			  <td>$velocityTool.divideThousand($!item.grossWeight)</td>
+			  <td>$velocityTool.divideThousand($!item.grossVolume)</td>
+			  <td>$velocityTool.getWeightVolumeRate($!item.grossWeight,$!item.grossVolume)</td>
+			  #if($orderIndex==1)
+			  <td rowspan="$itemNum">$velocityTool.divideThousand($!purchase.totalWeight)</td>
+			  <td rowspan="$itemNum">$velocityTool.divideThousand($!purchase.totalVolume)</td>
+			  <td rowspan="$itemNum">$!purchase.proportion</td>
+			  <td rowspan="$itemNum">$velocityTool.formatMoney($!purchase.preFreight)</td>
+			  <td rowspan="$itemNum">$velocityTool.formatMoney($!purchase.everyFreight)</td>
+			  <td rowspan="$itemNum">$velocityTool.formatMoney($!purchase.totalPrice)</td>
+			  #end
+			</tr>
+		 #else
+			  <tr>
+			      <td>$!item.name</td>
+        		  <td>$!item.skuCode</td>
+        		  <td>$velocityTool.formatMoney($!item.MPrice)</td>
+				  <td>$!item.num</td>
+        		  <td>$velocityTool.divideThousand($!item.grossWeight)</td>
+        		  <td>$velocityTool.divideThousand($!item.grossVolume)</td>
+        		  <td>$velocityTool.getDivisionValue($!item.grossWeight,$!item.grossVolume)</td>
+			  </tr>
+		 #end
+		 
+	  #end
+ 
+    #end

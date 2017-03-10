@@ -1,0 +1,541 @@
+#init("运费管理",["配送管理","修改运费模板"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+  <link href="/static/stylesheets/sumoselect.css" rel="stylesheet" type="text/css">
+ <style>
+ article, aside, blockquote, body, button, code, dd, details, div, dl, dt, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, input, legend, li, menu, nav, ol, p, pre, section, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+article, aside, blockquote, body, button, code, dd, details, div, dl, dt, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, input, legend, li, menu, nav, ol, p, pre, section, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+.m-top-bar .dropdown .sub-panel {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #dedede;
+}
+.m-top-bar .dropdown .sub-cmp, .m-top-bar .dropdown .sub-panel {
+    display: none;
+    left: 0;
+    position: absolute;
+    top: 34px;
+    z-index: 420;
+}
+.m-top-bar {
+    color: #666;
+    line-height: 35px;
+}
+ .c-lst {
+    height: auto;
+    padding: 11px 0;
+    width: 547px;
+}	
+ .fl{
+   text-decoration: none;
+ }
+ ol, ul {
+    list-style: outside none none;
+}
+.citys {
+    float: left;
+    overflow: hidden;
+    width: 248px;
+    }
+ 
+ .fl li a {cursor: pointer;
+    background-color: #fff;
+    color: #666;
+    float: left;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    padding: 0 5px;
+    white-space: nowrap;
+     text-decoration: none;
+}   
+.bubaoyou{
+	display:none;
+}
+.baoyou{
+}
+.baoyou ul li{
+	padding:0 0;
+	margin:10px 10px;
+	float:left;
+	width:58px;
+	text-align:center;
+}
+.baoyou ul li a{
+	text-decoration:none;cursor:pointer;display:block;width:40px;height:40px;line-height:40px;
+}
+
+.baoyou ul li a:hover,.baoyouActive{
+	background:rgb(61,74,93);border:black 1px solid;color:white;
+}
+.baoyou_city{
+	text-indent:25px;
+	width:500px;
+	margin-bottom:30px;
+}
+.opt label {
+    margin-bottom: 0px;
+}
+ </style>
+#end
+<form id="fare"> 
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">修改运费模板</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                    <div class="col-md-12">
+					  <div class="form-horizontal">
+						<label class="col-md-2 control-label no-padding-right no-padding-left">模板名称：</label>
+						<div class="col-md-6 row">
+						  <input type="text" class="form-control" id="name" name="name" value="$!result.name">
+						</div>
+					 </div>
+                    </div>
+            </div>
+			<div class="row" style="margin-top:20px;">
+				 <div class="col-md-12">
+					  <div class="form-horizontal">
+						<label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;">是否包邮：</label>
+						<div class="col-md-6 row">
+							<label class="radio-inline">
+							  <input type="radio" name="canPackage"  value="0"> 是
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="canPackage"  value="1"> 否
+							</label>
+						</div>
+					 </div>
+                   </div>
+			</div>
+			<div class="row" style="margin-top:20px;">
+				 <div class="col-md-12">
+					  <div class="form-horizontal">
+						<label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;">计价方式：</label>
+						<div class="col-md-10 row">
+							<label class="radio-inline">
+							  <input type="radio" name="priceWay"  value="0" checked> 按件数
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="priceWay" value="1"> 按重量
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="priceWay"  value="2"> 按体积
+							</label>
+							<label class="radio-inline">
+							  <input type="radio" name="priceWay"  value="3"> 按金额
+							</label>
+						</div>
+					 </div>
+                   </div>
+			</div>
+			<div class="row bubaoyou" style="margin-top:20px;">
+				 <div class="col-md-12">
+					  <div class="form-horizontal">
+							  <label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;">运送方式：</label>
+								
+							  <div class="col-md-10 row">
+							  <div >
+								 快递
+							   </div>
+							   
+								<div class="col-md-12 row" style="border-style: solid; border-width:1px;">
+									<div class="header" style="padding-top:5px;background-color:#F3FEED;margin:5px;padding:5px;display:block;">
+											  默认运费：<input type="text" name="num"  style="display:inline;width:50px;" value="$!result.transportFrees[0].num">件内，
+											<input type="text" name="price" style="display:inline;width:50px;" value="$!result.transportFrees[0].price">元，
+											每增加<input type="text"  name="addNum" style="display:inline;width:50px;" value="$!result.transportFrees[0].addNum">件，
+											增加运费<input type="text" " name="addPrice" style="display:inline;width:50px;" value="$!result.transportFrees[0].addPrice">元
+											<input type="hidden" id="defaultTid" tid="$!result.transportFrees[0].id"/>
+									</div>
+									<div>
+										<table class="table table-bordered" id="fareTable">
+											<tr>
+												<th>运送到</th>
+												<th>首件（件）</th>
+												<th>首费（元）</th>
+												<th>续件（件）</th>
+												<th>续费（元）</th>
+												<th>操作</th>
+											</tr>
+											<tr  class="fareModel" id="fm" style="display:none">
+												<td>
+												#if($!result.canPackage==0)
+													<select   style="width:200px"  multiple="multiple" placeholder="请选择城市" onchange="changeTagSelect(this);" name="tagIds" class="tagId SumoUnder"  tabindex="-1" >
+												#else
+													<select   style="width:200px"  multiple="multiple" placeholder="请选择城市" onchange="changeTagSelect(this);" name="tagIds" class="tagId SumoUnder"  tabindex="-1" fareId="$!result.transportFrees[0].id">
+												#end 
+												 <optgroup label="A">
+												 	<option>安徽</option>
+				                                 </optgroup>
+				                                  <optgroup label="B">
+												 	<option>北京</option>
+				                                 </optgroup>
+				                                  <optgroup label="C">
+												 	<option>重庆</option>
+				                                 </optgroup>
+				                                  <optgroup label="F">
+												 	<option>福建</option>
+				                                 </optgroup>
+				                                  <optgroup label="G">
+												 	<option>广东</option>
+												 	<option>广西</option>
+												 	<option>贵州</option>
+												 	<option>甘肃</option>
+				                                 </optgroup>
+				                                 <optgroup label="H">
+												 	<option>河北</option>
+												 	<option>黑龙江</option>
+												 	<option>海南</option>
+												 	<option>湖北</option>
+												 	<option>湖南</option>
+												 	<option>河南</option>
+				                                 </optgroup>
+				                                 <optgroup label="J">
+												 	<option>江苏</option>
+												 	<option>吉林</option>
+												 	<option>江西</option>
+				                                 </optgroup>
+				                                 <optgroup label="L">
+												 	<option>辽宁</option>
+				                                 </optgroup>内蒙古(西)
+				                                 <optgroup label="N">
+												 	<option>内蒙古(西)</option>
+												 	<option>内蒙古(东)</option>
+												 	<option>宁夏</option>
+				                                 </optgroup>
+				                                  <optgroup label="Q">
+												 	<option>青海</option>
+				                                 </optgroup>
+				                                 <optgroup label="S">
+												 	<option>上海</option>
+												 	<option>山东</option>
+												 	<option>山西</option>
+												 	<option>四川</option>
+												 	<option>陕西</option>
+				                                 </optgroup>
+				                                 <optgroup label="T">
+												 	<option>天津</option>
+				                                 </optgroup>
+				                                 <optgroup label="X">
+												 	<option>西藏</option>
+												 	<option>新疆</option>
+				                                 </optgroup>
+				                                 <optgroup label="Y">
+												 	<option>云南</option>
+				                                 </optgroup>
+				                                 <optgroup label="Z">
+												 	<option>浙江</option>
+				                                 </optgroup>
+				                     		  </select>
+				                     		  	<input class="canDefault" type="hidden" value="0"/>
+				                     		  	</td>
+												<td><input type="text"  class="form-control num" style="width:80px"> 
+												</td>
+												<td><input type="text"  class="form-control price" style="width:80px"></td>
+												<td><input type="text"  class="form-control addNum" style="width:80px"></td>
+												<td><input type="text"  class="form-control addPrice" style="width:80px"></td>
+												<td><a class="delFare" href="javascript:void(0);">删除</a></td>
+											</tr>
+											#if($!result.canPackage==1)
+											#foreach($tt in $!result.transportFrees)
+											#if($velocityCount!=1)
+											#set( $count = $tt)
+												<tr  class="fareModel"  >
+												<td><select   style="width:200px"  multiple="multiple" placeholder="请选择城市" onchange="changeTagSelect(this);" name="tagIds" class="tagId SumoUnder"  tabindex="-1">
+												 <optgroup label="A">
+												 	<option>安徽</option>
+				                                 </optgroup>
+				                                  <optgroup label="B">
+												 	<option>北京</option>
+				                                 </optgroup>
+				                                  <optgroup label="C">
+												 	<option>重庆</option>
+				                                 </optgroup>
+				                                  <optgroup label="F">
+												 	<option>福建</option>
+				                                 </optgroup>
+				                                  <optgroup label="G">
+												 	<option>广东</option>
+												 	<option>广西</option>
+												 	<option>贵州</option>
+												 	<option>甘肃</option>
+				                                 </optgroup>
+				                                 <optgroup label="H">
+												 	<option>河北</option>
+												 	<option>黑龙江</option>
+												 	<option>海南</option>
+												 	<option>湖北</option>
+												 	<option>湖南</option>
+												 	<option>河南</option>
+				                                 </optgroup>
+				                                 <optgroup label="J">
+												 	<option>江苏</option>
+												 	<option>吉林</option>
+												 	<option>江西</option>
+				                                 </optgroup>
+				                                 <optgroup label="L">
+												 	<option>辽宁</option>
+				                                 </optgroup>内蒙古(西)
+				                                 <optgroup label="N">
+												 	<option>内蒙古(西)</option>
+												 	<option>内蒙古(东)</option>
+												 	<option>宁夏</option>
+				                                 </optgroup>
+				                                  <optgroup label="Q">
+												 	<option>青海</option>
+				                                 </optgroup>
+				                                 <optgroup label="S">
+												 	<option>上海</option>
+												 	<option>山东</option>
+												 	<option>山西</option>
+												 	<option>四川</option>
+												 	<option>陕西</option>
+				                                 </optgroup>
+				                                 <optgroup label="T">
+												 	<option>天津</option>
+				                                 </optgroup>
+				                                 <optgroup label="X">
+												 	<option>西藏</option>
+												 	<option>新疆</option>
+				                                 </optgroup>
+				                                 <optgroup label="Y">
+												 	<option>云南</option>
+				                                 </optgroup>
+				                                 <optgroup label="Z">
+												 	<option>浙江</option>
+				                                 </optgroup>
+				                     		  </select>
+				                     		  	<input class="canDefault" type="hidden" value="0"/>
+				                     		  	</td>
+												<td><input type="text"  class="form-control num" style="width:80px" value="$tt.num"> 
+												</td>
+												<td><input type="text"  class="form-control price" style="width:80px" value="$!tt.price"></td>
+												<td><input type="text"  class="form-control addNum" style="width:80px" value="$!tt.addNum"></td>
+												<td><input type="text"  class="form-control addPrice" style="width:80px" value="$!tt.addPrice"></td>
+												<td><a class="delFare" href="javascript:void(0);">删除</a></td>
+											</tr>
+											#end
+											#end
+											#end
+										</table>
+											
+										<div style="margin-top:40px;">
+											<a href="javascript:void(0);" id="setFare" style="cursor:pointer">为指定地区城市设置运费</a>
+										</div>
+									</div>
+								</div>
+							 </div>
+		               </div>
+				</div>
+			</div>
+			<div class="row bubaoyou" style="margin-top:20px;">
+                    <div class="col-md-12">
+							  <label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;"></label>
+							  <div class="col-md-10 row">
+								<a href="javascript:void(0);" id="setPackage">指定条件包邮</a>
+							 </div>
+					</div>
+            </div>
+            <div class="row bubaoyou" style="margin-top:0px;" id="setting">
+            	 <div class="col-md-12">
+            	 <label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;"></label>
+	            	 <div class="col-md-10 row">
+	            	<table id="packageTable" class="table table-bordered sonnenjahrTable" #if($!result.packageMails.size()>0) style="display:table;" #else style="display:none;" #end>
+	            		<label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;"></label>
+	            		<div class="col-md-10 row">
+		            		<tr>
+		            			<th>地区设置（为指定地区城市设置运费）</th>
+		            			<th>配送方式</th>
+		            			<th>包邮条件</th>
+		            			<th>操作</th>
+		            		</tr>
+		            	
+	            		
+	            			<tr  class="packageModel">
+		            			<td>
+		            			全国（默认）
+								</td>
+	            			<td>
+	            				<select class="form-control" >
+	            					<option>快递</option>
+	            				</select>
+	            			</td>
+	            			<td>
+	            			<div style="display:inline">
+								<select class="form-control packageCond conditionParameter" class="form-control" style="width:130px;display:inline;">
+	            					<option value="0">金额</option>
+	            					<option value="1">件数</option>
+	            					<option value="2">金额+件数</option>
+	            				</select>
+	            				</div>
+	            				<div class="price" style="display:inline">
+		            				<input type="text"  class="form-control" name="price"  style="margin-top:-20px;display:inline;width:60px;">元以上包邮
+	            				</div>
+	            				<div class="kind" style="display:inline">
+		            				满 <input type="text"  class="form-control" name="num"	 style="margin-top:-20px;display:inline;width:60px;">件包邮
+	            				</div>
+	            				<div class="priceAndkind" style="display:inline">
+		            				满 <input type="text"  class="form-control" name="num"	 style="margin-top:-20px;display:inline;width:60px;"> 件包邮
+	            					<input type="text"  class="form-control" name="price"	 style="margin-top:-20px;display:inline;width:60px;"> 元以上 
+	            				</div>
+							</td>
+	            			<td><a class="delPackage" href="javascript:void(0);" >删除</a></td>
+	            		</tr>
+	            	
+	            		</div>
+	            	</table>
+	            	
+	            	</div>
+	             </div>	
+            </div>
+            
+            <div class="row" style="margin-top:20px;">
+                    <div class="col-md-12">
+							  <label class="col-md-2 control-label no-padding-right no-padding-left " style="text-indent:-30px;"></label>
+							  <div class="col-md-10 row">
+								<button type="button" class="btn btn-primary" id="submit" value="$!result.id" transportTemplateId="$!transportTemplateId">保存并返回</button>
+								<button type="button" class="btn btn-primary" id="return">取消</button>
+							 </div>
+					</div>
+            </div>
+            </div>
+            </div>
+            
+            
+            <div style="height:300px;">
+            </div>
+ </form> 
+ 
+ #define($js)
+ <script src="/static/javascripts/jquery.sumoselect.js"></script>
+  <script src="/static/javascripts/page/system/fare-modify.js"></script>
+ <script>
+var mo;
+	 $(document).ready(function () {
+	 $(".priceAndkind").hide();
+	 $(".kind").hide();
+   		 
+          // mo= $('.prov').SumoSelect();
+     });
+     function changeTagSelect(e){
+		return ;
+	}
+</script>
+
+
+ <script>
+		$("input[name='priceWay']:eq($!result.priceWay)").attr("checked","checked");
+		$("input[name='canPackage']:eq($!result.canPackage)").attr("checked","checked");
+</script>
+<script>
+	$(function(){
+	function loadBaoyouCity(){
+			#foreach($!pm in $!result.packageMails)
+				$(".baoyou li  :contains('$!pm.area'):eq(0)").addClass("baoyouActive");
+			#end
+	}
+	//遍历地区 实例化运费单下拉表
+	function loadTranSport(){
+		#if($!result.canPackage==0)
+			loadBaoyouCity();
+		#else
+			#foreach($tt in $!result.transportFrees)
+				#set($index=${velocityCount})
+				#if($index!=1)
+					#foreach($!area in $!velocityTool.getAreas($tt.area))
+					 	$("#fareTable tr:eq($index) td:eq(5) .delFare").attr("tid",$!tt.id);
+						$("#fareTable tr:eq($index) td:eq(0) .tagId").SumoSelect(); 
+						$("#fareTable tr:eq($index) td:eq(0) .tagId +p span").text(' $!velocityTool.replaceAreas($tt.area) ');
+						$("#fareTable tr:eq($index) .tagId + p span").text(' $!velocityTool.replaceAreas($tt.area) ');
+						$!velocityTool.getAreas($tt.area).size();
+						#foreach($!area in $!velocityTool.getAreas($tt.area))
+							$("#fareTable tr:eq($index) .tagId  option:contains('$!area')").attr('selected','selected');
+							$("#fareTable tr:eq($index) .optWrapper li ul li label:contains('$!area')").parent().addClass("selected");
+						#end
+					#end	
+				#end
+			#end
+           #end
+		}
+		function loadPackage(){
+		   #if($!result.packageMails.size()>0)
+    		$("#packageTable tr:eq(1) td:eq(3) .delPackage").attr("pid",$!result.packageMails[0].id);
+    		$("#packageTable tr:eq(1) td:eq(2) .packageCond").val($!result.packageMails[0].conditionParameter);
+    		#if($!result.packageMails[0].conditionParameter==1)
+    					$("#packageTable tr:eq(1)").parent().parent().find(".kind").css("display","inline");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".priceAndkind").css("display","none");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".price").css("display","none");
+    					$("#packageTable tr:eq(1) td:eq(2) .kind input[name='num']").val($!result.packageMails[0].num);
+    		#end
+    		#if($!result.packageMails[0].conditionParameter==2)
+    					$("#packageTable tr:eq(1)").parent().parent().find(".priceAndkind").css("display","inline");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".kind").css("display","none");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".price").css("display","none");
+    					$("#packageTable tr:eq(1) td:eq(2) .priceAndkind input[name='price']").val($!result.packageMails[0].price);
+    					$("#packageTable tr:eq(1) td:eq(2) .priceAndkind input[name='num']").val($!result.packageMails[0].num);
+    		#end
+    		#if($!result.packageMails[0].conditionParameter=='0')
+    					$("#packageTable tr:eq(1)").parent().parent().find(".price").css("display","inline");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".kind").css("display","none");
+    					$("#packageTable tr:eq(1)").parent().parent().find(".priceAndkind").css("display","none");
+    					$("#packageTable tr:eq(1) td:eq(2) .price input[name='price']").val($!result.packageMails[0].price);
+    		#end
+	    #end
+	}
+	
+		//遍历地区 实例化包邮 下拉表
+		loadTranSport();
+		loadPackage();
+
+	
+	var formshow=$!result.canPackage;
+	if(formshow==0){
+		$(".bubaoyou").hide();
+		$(".baoyou").show();
+	}else{
+		$(".baoyou").hide();
+		$(".bubaoyou").show();
+	}
+	$(".sumo_tagIds p span").removeClass("placeholder");
+	})
+	
+	
+	
+</script>
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/system/fare");
+	});
+	$(function(){
+		$("input[name='canPackage']").click(function(){
+			if($("input[name='canPackage']:checked").val()=='0'){
+				$(".baoyou").show();
+				$(".bubaoyou").hide();
+			}else{
+				$(".baoyou").hide();
+				$(".bubaoyou").show();
+			}
+		})
+	})
+	
+	$(".baoyou ul li a").on("click",function(){
+			if($(this).hasClass("baoyouActive")){
+				//$(".baoyou_city").val($(this).html());
+				$(this).removeClass("baoyouActive");
+			}else{
+				$(this).addClass("baoyouActive");
+			}
+			
+		})
+</script>
+#end

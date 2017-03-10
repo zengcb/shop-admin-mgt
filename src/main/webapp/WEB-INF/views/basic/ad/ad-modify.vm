@@ -1,0 +1,54 @@
+#init("广告位管理",["广告位列表","广告位列表","编辑广告位"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<div class="panel colourable">
+ 
+<form class="form-horizontal" role="form" style="margin-top:10px" id="biaodan">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">排序：</label>
+    <div class="col-sm-6">
+    	<input type="text"  id="sort" name="sort" class="form-control" value="$!result.sort">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">代码：</label>
+    <div class="col-sm-6">
+    	<input type="text"  id="code" name="sort" class="form-control" value="$!result.code" disabled="readonly">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">名称：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+    	 <input type="text"  id="name"  name="name" class="form-control" value="$!result.name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">类型：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+    	<select id="type" name="type" >
+    		<option value='0'>固定</option>
+    		<option value='1'>滚动</option>
+    	</select>
+    </div>
+  </div>
+    <div class="form-group">
+    	<label  class="col-sm-2 control-label"></label>
+    <div class="col-sm-10 "  style="margin-top:4px" >
+		<button type="button" class="btn btn-primary" id="modify" value="$!result.id">编辑广告位</button>
+		<button type="button" class="btn btn-default" onclick="window.location='/ad'">返回</button>
+    </div>
+    </div>
+</form>
+</div>
+#define($js)
+<script src="/static/javascripts/page/ad/ad-update.js"></script>
+<script>
+	$("#type").val($!result.type)
+</script>
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/ad");
+	});
+</script>
+#end

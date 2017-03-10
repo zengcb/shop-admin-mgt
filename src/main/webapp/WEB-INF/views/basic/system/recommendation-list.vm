@@ -1,0 +1,730 @@
+#init("商品推荐管理",["系统管理","平台管理","商品推荐管理"])
+#define($css)
+ <style>
+	#myTab>li>a{
+ margin-right:0px;
+}
+.nav-tabs>li>a{
+ margin-right:0px;
+}
+ </style>
+#end
+
+<div class="panel colourable">
+	<div class="panel-body">
+	 <ul id="myTab" class="nav nav-tabs tabs-flat  nav-justified">
+    	<li class="active" data="001"><a href="#childTable" data-toggle="tab">儿童天地</a></li>
+    	<li data="002"><a href="#bookTable" data-toggle="tab">提笔急书</a></li>
+    	<li data="003"><a href="#beautyTable" data-toggle="tab">美丽人身</a></li>
+		<li data="004"><a href="#otherTable" data-toggle="tab">家居日常</a></li>
+   </ul>
+   <div id="tabContent" class="tab-content" style="padding:15px;">
+	 <div class="tab-pane fade in active" id="childTable">
+		   <ul id="myTab" class="nav nav-tabs">
+        	<li class="active" data="0"><a href="#childTable0" data-toggle="tab">折扣商品</a></li>
+        	<li data="1"><a href="#childTable1" data-toggle="tab">新品推荐</a></li>
+        	<li data="2"><a href="#childTable2" data-toggle="tab">大家都在买</a></li>
+           </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="childTable0">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($child.discountData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${child.discountData.size()})
+                    			#foreach($obj in $child.discountData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$child.discountData.size()">
+                    						折扣商品
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									#if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="childTable1">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($child.newData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${child.newData.size()})
+                    			#foreach($obj in $child.newData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$child.newData.size()">
+                    						新品推荐
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								    #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="childTable2">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($child.buyData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${child.buyData.size()})
+                    			#foreach($obj in $child.buyData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$child.buyData.size()">
+                    						 大家都在买
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									 #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            </div>
+	 </div>
+	 <div class="tab-pane fade" id="bookTable">
+		   <ul id="myTab" class="nav nav-tabs">
+        	<li class="active" data="0"><a href="#bookTable0" data-toggle="tab">折扣商品</a></li>
+        	<li data="1"><a href="#bookTable1" data-toggle="tab">新品推荐</a></li>
+        	<li data="2"><a href="#bookTable2" data-toggle="tab">大家都在买</a></li>
+           </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="bookTable0">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($book.discountData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${book.discountData.size()})
+                    			#foreach($obj in $book.discountData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$book.discountData.size()">
+                    						折扣商品
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									#if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="bookTable1">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($book.newData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${book.newData.size()})
+                    			#foreach($obj in $book.newData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$book.newData.size()">
+                    						新品推荐
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								    #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="bookTable2">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($book.buyData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${book.buyData.size()})
+                    			#foreach($obj in $book.buyData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$book.buyData.size()">
+                    						 大家都在买
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									 #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            </div>
+	 </div>
+	 <div class="tab-pane fade" id="beautyTable">
+		    <ul id="myTab" class="nav nav-tabs">
+        	<li class="active" data="0"><a href="#beautyTable0" data-toggle="tab">折扣商品</a></li>
+        	<li data="1"><a href="#beautyTable1" data-toggle="tab">新品推荐</a></li>
+        	<li data="2"><a href="#beautyTable2" data-toggle="tab">大家都在买</a></li>
+           </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="beautyTable0">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($beauty.discountData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${beauty.discountData.size()})
+                    			#foreach($obj in $beauty.discountData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$beauty.discountData.size()">
+                    						折扣商品
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									#if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="beautyTable1">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($beauty.newData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${beauty.newData.size()})
+                    			#foreach($obj in $beauty.newData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$beauty.newData.size()">
+                    						新品推荐
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								    #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="beautyTable2">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($beauty.buyData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${beauty.buyData.size()})
+                    			#foreach($obj in $beauty.buyData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$beauty.buyData.size()">
+                    						 大家都在买
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									 #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            </div>
+	 </div>
+	 <div class="tab-pane fade" id="otherTable">
+		   <ul id="myTab" class="nav nav-tabs">
+        	<li class="active" data="0"><a href="#otherTable0" data-toggle="tab">折扣商品</a></li>
+        	<li data="1"><a href="#otherTable1" data-toggle="tab">新品推荐</a></li>
+        	<li data="2"><a href="#otherTable2" data-toggle="tab">大家都在买</a></li>
+           </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="otherTable0">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($other.discountData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${other.discountData.size()})
+                    			#foreach($obj in $other.discountData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$other.discountData.size()">
+                    						折扣商品
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									#if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-success btn-sm glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="otherTable1">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($other.newData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${other.newData.size()})
+                    			#foreach($obj in $other.newData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$other.newData.size()">
+                    						新品推荐
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								    #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            	<div class="tab-pane fade" id="otherTable2">
+        			<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                      <thead>
+                            <tr>
+                              <th>推荐模板</th>
+                              <th>序号</th>
+                              <th>商品</th>
+                              <th>操作</th>
+                             </tr>
+                    		<tbody>
+                    		#if($other.buyData.size()==0)
+                    		<tr>
+                    			<td colspan="4" style="text-align:center">无数据</td>
+                    		</tr>
+                    		#else
+        						#set($totalSize = ${other.buyData.size()})
+                    			#foreach($obj in $other.buyData)
+                    				#if($velocityCount==1)
+                    				 <tr>
+                                        <td rowspan="$other.buyData.size()">
+                    						 大家都在买
+                    					</td>
+                    					<td style="text-align:center;">$!obj.sortFlag</td>
+                    					<td style="text-align:center;">$!obj.itemName</td>
+                    			        <td style="text-align:center;" data="$obj.id">
+                    					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        								  #if($totalSize>1)
+        								  <button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+                    					  #end
+        								</td>  
+                    			    </tr>
+                    			    #else
+                    					<tr>
+                            			  <td style="text-align:center;">$!obj.sortFlag</td>
+                    					  <td style="text-align:center;">$!obj.itemName</td>
+                    			          <td style="text-align:center;" data="$obj.id">
+                    					    <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+                    					    <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+        									 #if($totalSize>1)
+        									<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-up upItemBtn"></button>
+        									#if($velocityCount!=$totalSize)
+        										<button type="button" class="btn btn-sm btn-success glyphicon glyphicon-chevron-down downItemBtn"></button>
+        									#end
+        									#end
+                    					  </td>
+                    					</tr>	
+                    				#end
+                    			#end
+                            #end
+                          </tbody>
+                          </thead>
+                    </table>
+        			<button class="btn btn-primary toAddPage">添加商品</button>
+            	</div>
+            </div>
+	 </div>
+   </div>
+  
+	
+</div>
+</div>
+	
+
+#define($js)
+<script src="/static/javascripts/page/system/recommendation-list.js"></script>
+<script>
+
+</script>
+#end

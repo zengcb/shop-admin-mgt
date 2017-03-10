@@ -1,0 +1,21 @@
+#macro(initTree $list $level)
+<ul>
+	#if($list) 
+		#foreach($item in $list)
+			<li #if($level > 1) style="display:none;" #end>
+				#if($!{item.childs} && $!{item.childs.size()} > 0) 
+					<i class="fa fa-folder"></i> 
+					#else 
+						<i class="fa fa-file-o"></i>  
+				#end
+				<span>				
+				${item.name}
+				</span>&nbsp;&nbsp;
+				<a href="javascript:void(0)" data-code='$!{item.info}'  class="edit dev_node_${item.id}"></a>
+        		#set($LN=$level+1) 
+        		#initTree(${item.childs},$LN)
+			</li> 
+		#end
+	#end
+</ul>
+#end

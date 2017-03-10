@@ -1,0 +1,52 @@
+#set($layout="inc/blank.vm")
+
+<table class="table table-striped sonnenjahrTable table-bordered table-hover">
+<thead>
+        <tr>
+          <th>账号</th>
+		  <th>用户名</th>
+          <th>账号等级</th>
+		  <th>账号状态</th>
+          <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageBean.recordList.size()==0)
+		<tr>
+			<td colspan="6" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageBean.recordList)
+        <tr data="$obj.id">
+          <td>$!obj.name</td>
+		   <td>$!obj.realName</td>
+          <td>
+		    #if($!obj.superAdmin==0)
+					超级管理员
+			#else
+					普通管理员
+			#end
+		  
+		  </td>
+          <td>
+		  
+		    #if($!obj.status==0)
+				正常
+			#else
+				锁定
+			#end
+		  
+		  </td>
+		  <td>$velocityTool.getTime($!obj.created)</td>
+          <td>
+		   <a class="edit"   href="/supplier/supplierMemberDetail?supplierId=$!obj.id">编辑</a>
+           <a  class="delAdmin" value="$!obj.id">删除</a>
+		   <a class="changePwdBtn" >修改密码</a>
+		  </td>
+        </tr>
+        #end
+		#end
+      </tbody>
+      </thead>
+</table>
+#pageNation($pageBean)

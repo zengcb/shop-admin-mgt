@@ -1,0 +1,44 @@
+	#set($layout="inc/blank.vm")
+  <div class="panel colourable">
+<div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">供应商管理员信息</b></span>
+                 <div class="panel-heading-controls">
+					<button type="button" class="btn btn-primary" id="addAdmin" style="float:right">添加供应商管理员</button>
+                </div>
+            </div>
+    <div class="panel-body">
+  <!-- Table -->
+  <table class="table table-striped table-bordered table-hover sonnenjahrTable">
+  <input type="hidden" id="supplierCompanyId" value="$!supplierCompanyId"/>
+
+  	<tr>
+  		<th>账号</th>
+  		<th>登陆名称</th>
+  		<th>状态</th>
+  		<th>操作</th>
+  	</tr>
+  	#if($pageBean.recordList.size()==0)
+  	<tr><td colspan=5 style="text-align:center">占无信息</td></tr>
+  	#end
+  	#if($pageBean.recordList.size()!=0)
+  	#foreach($obj in $pageBean.recordList)
+  	<tr>
+  		<td class="name">$obj.name</td>
+  		<td class="realName">$!obj.realName</td>
+  		<td>#if($!obj.status==0)启用#else停用#end</td>
+  		<td id="status">
+  			<input type="hidden" class="supId" val="$!obj.id"/>
+  			<a  class=" modifyAdmin" value="$!obj.id" href="#">编辑</a>
+  			<a  class=" delAdmin" value="$!obj.id" href="#">删除</a>
+  			#if($!obj.status==0)
+  				<a class="block" value="$!obj.id" supId="$!obj.id" href="#">停用</a>
+  			#else
+	  			<a class="block" value="$!obj.id" supId="$!obj.id" href="#">启用</a>
+  			#end
+  		</td>
+  	</tr>
+  	#end
+  	#end
+  </table>
+ </div>
+  </div>

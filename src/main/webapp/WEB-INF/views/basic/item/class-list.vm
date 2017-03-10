@@ -1,0 +1,15 @@
+#init("分类列表",["商品管理","分类列表"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <script>
+ var treeData=$treeData;
+ console.log(treeData);
+</script>
+#end
+<div class="col-md-6 col-sm-6">
+     <div id="classTree"></div>
+</div>
+#define($js)
+<script src="/static/javascripts/jstree/jstree.min.js"></script>
+<script src="/static/javascripts/page/class-list.js"></script>
+#end

@@ -1,0 +1,61 @@
+#init("查看用户",["会员管理","会员列表","查看用户"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <style>
+ 	#user table{
+ 		margin:20px auto;width:80%;
+ 	}
+ 	#user td{
+ 	}
+ 	
+ 	#user .title{width:30%;}
+ </style>
+#end
+<div class="panel colourable">
+	<div class="panel-heading">
+	    <span class="panel-title"><b id="dept_name">&nbsp;查看当前用户数</b></span>
+	     <div class="panel-heading-controls">
+	    </div>
+	</div>
+ 
+  <div class="form-group" id="user">
+  #if($results.size()>0)
+	  		<table class="table table-bordered">
+				<tr>
+					<td ><b>用户ID</b></td>
+    	  			<td><b>会员名:</b></td>
+    	  			<td><b>电话号码:</b></td>
+    	  			<td><b>手机号码:</b></td>
+    	  			<td><b>归属地	:</b></td>
+    	  			<td><b>邮箱:</b></td>
+    	  			<td><b>注册时间:</b></td>
+				</tr>
+  		#foreach($obj in $results)
+	  			<tr>
+					<td>$!obj.id</td>
+    	  			<td>$!obj.name</td>
+    	  			<td>$!obj.phone</td>
+    	  			<td>$!obj.mobile</td>
+    	  			<td>$!obj.province</td>
+    	  			<td>$!obj.email</td>
+    	  			<td>$!obj.createTime</td>
+				</tr>
+  		#end
+	  		</table>
+  	#else
+  		<table class="table table-bordered">
+  			<tr>
+  				<td style="text-align:center">占无信息</td>
+  			</tr>
+  		</table>
+  	#end
+  </div>
+  <div style="padding-left:10%">
+  <a href="/member" class="btn btn-primary">返回</a>
+  </div>
+</div>
+#define($js)
+<script src="/static/javascripts/page/member/grade-update.js"></script>
+<script>
+</script>
+#end

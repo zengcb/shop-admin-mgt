@@ -1,0 +1,35 @@
+#set($layout="inc/blank.vm")
+#if($pageInfo.size()!=0)
+<div><b>用户总数：$!sum</b></div>
+#end
+<table class="table table-striped table-bordered table-hover sonnenjahrTable">
+<thead>
+        <tr>
+          <th>ID</th>
+          <th>用户名</th>
+          <th>手机号码</th>
+          <th>归属地</th>
+          <th>会员ID</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageBean.recordList.size()==0)
+		<tr>
+			<td colspan="8" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageBean.recordList)
+        <tr>
+          <td>$!obj.id</td>
+          <td>$!obj.name</td>
+          <td>$!obj.mobile</td>
+          <td>$!obj.province</td>
+          <td>$!obj.memberId</td>
+          <td><a href="/user/list/id?id=$!obj.id">查看</a></td>
+        </tr>
+        #end
+		#end
+      </tbody>
+      </thead>
+</table>
+#pageNation($pageBean)

@@ -1,0 +1,97 @@
+#init("",["会员管理","供应商列表","供应商编辑"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <link href="/static/stylesheets/sumoselect.css" rel="stylesheet" type="text/css">
+ <style>
+	.font-normal{
+	font-weight: normal;
+	}
+ </style>
+#end
+<div class="col-md-12">
+          <div class="panel colourable">
+			  <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">基本信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+			 <div class="panel-body">
+				 <form class="form-horizontal" role="form" id="updateForm" style="margin-top:10px;height:400px;" id="updateForm">
+			  <input type="hidden" name="id" id="supplierId" value="$!supplier.id">
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">管理员名字:</label>
+			    <div class="col-sm-6 no-padding-right no-padding-left">
+			    	<input type="text"  id="realName" name="realName" value="$!supplier.realName" class="form-control" >
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword" class="col-sm-2 control-label">管理员登陆账号:</label>
+			    <div class="col-sm-6 no-padding-right no-padding-left" >
+			    	 <input type="text"  id="name"  name="name" value="$!supplier.name" class="form-control" >
+			    </div>
+			  </div>
+			  <div class="form-group">
+				<label for="inputPassword" class="col-sm-2 control-label">用户状态:</label>
+			    <div class="col-sm-6 no-padding-right no-padding-left" >
+			    	 <label class="radio-inline">
+							<input type="radio" name="status"  value="0" class="px superAdmin form-radio" #if($!supplier.status==0) checked #end >
+							<span class="lbl text">正常</span>
+    				</label>
+					<label class="radio-inline">
+							<input type="radio" name="status"  value="1" class="px superAdmin form-radio" #if($!supplier.status==1) checked #end>
+							<span class="lbl text">锁定</span>
+    				</label>
+			    </div>
+              </div>
+			  <div class="form-group">
+			    <label for="inputPassword" class="col-sm-2 control-label">选择权限:</label>
+			    <div class="col-sm-6 no-padding-right no-padding-left" >
+    							<label class="radio-inline">
+										<input type="radio" name="superAdmin"  value="0" class="px superAdmin form-radio" #if($!supplier.superAdmin==0) checked #end >
+										<span class="lbl text">超级管理员</span>
+    							</label>
+								<label class="radio-inline">
+										<input type="radio" name="superAdmin"  value="1" class="px superAdmin form-radio" #if($!supplier.superAdmin==1) checked #end>
+										<span class="lbl text">普通管理员</span>
+    							</label>
+			    </div>
+			  </div>
+			  
+			   <div class="form-group openMenuList #if($!supplier.superAdmin==0) hidden #end">
+			    <label for="inputPassword" class="col-sm-2 control-label">选择开通菜单:</label>
+			    <div class="col-sm-6 no-padding-right no-padding-left" >
+					<select multiple="multiple" placeholder="请选择开通的菜单"   class="functionId SumoUnder"  tabindex="-1">
+							 #foreach($function in $functions)
+								 <optgroup label="$function.name">
+									 #foreach($childTag in $function.children)
+										<option value="$childTag.id" >$childTag.name</option>
+									 #end
+                                 </optgroup>
+							 #end
+                       </select>
+			    </div>
+			  </div>
+			    <div class="form-group">
+			    	<label  class="col-sm-2 control-label"></label>
+			    <div class="col-sm-10 "  style="margin-top:4px" >
+					<button type="button" class="btn btn-primary" id="updateBtn">保存</button>
+					<button type="button" class="btn btn-default" onclick="history.go(-1);">返回</button>
+			    </div>
+			    </div>
+			</form>
+		     </div>
+		  </div>
+		 
+</div>
+
+
+#define($js)
+<script src="/static/javascripts/jquery.sumoselect.js"></script>
+<script src="/static/javascripts/page/member/supplier-member-detail.js"></script>
+<script>
+var functionIds="$function.functionId";
+  init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/supplier");
+	});
+</script>
+#end

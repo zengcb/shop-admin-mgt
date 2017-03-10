@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<toolbox>
+	<tool>
+		<key>velocityTool</key>
+		<scope>application</scope>
+		<class>com.shop.admin.tools.VelocityTool</class>
+	</tool>
+	
+</toolbox>

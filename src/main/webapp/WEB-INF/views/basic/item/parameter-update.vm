@@ -1,0 +1,94 @@
+#init("规格参数",["商品管理","规格参数"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <link href="/static/stylesheets/bootstrap.tree.css" rel="stylesheet" type="text/css">
+ <style>
+	.tree-input{
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 3px 8px;
+    text-decoration: none;
+	}
+ </style>
+#end
+
+
+
+<div class="row">
+                    <div class="col-md-6">
+					  <div class="form-horizontal">
+						<label class="col-md-2 control-label no-padding-right no-padding-left" style="margin-top:28px;">规格参数：</label>
+						
+						  <div class="col-md-10 col-sm-10 tree" id="parameterTree" style="padding-left:0px;">
+	<input type="hidden" id="paramId" value="$param.id">
+	<ul style="padding:0px;">
+		<li><div class="btn btn-primary" style="cursor: default;">$param.categoryName</div>&nbsp;&nbsp;<i style="cursor: pointer;" class="fa fa-plus addGroupIcon"></i></li>
+	<ul class="rootNode">
+		#foreach($data in $param.dataArray)
+         <li class="parent_li"><input type="text" class="groupText tree-input" value="$data.group">
+           <i style="cursor: pointer;" class="fa fa-plus addItemIcon"></i>
+          </i>
+			<ul>
+				#foreach($itemData in $data.params)
+				<li class="parent_li">
+				   <input type="text" class="tree-input itemText" value="$itemData">&nbsp;&nbsp;
+				    <i style="cursor: pointer;" class="fa fa-minus removeItemIcon"></i>
+        		     <ul>
+					 </ul>
+			    </li>
+				#end
+		     </ul>
+        </li>
+		#end
+	</ul>
+	</ul>
+  
+		
+		
+</div>
+					 </div>
+                    </div>
+</div>
+
+<div class="row">
+                    <div class="col-md-6">
+						  <div class="form-horizontal">
+						<label class="col-md-2 control-label no-padding-right no-padding-left">&nbsp;</label>
+						<div class="col-md-10 ">
+						  <button class="btn  btn-primary" id="updateParameterBtn">更新</button>
+						  <button class="btn btn-default" onclick="history.go(-1);">返回</button>
+						</div>
+					 </div>
+					</div>
+</div>
+
+<div class="groupBak hidden">
+	 <li class="parent_li"><input type="text" class="tree-input groupText" >&nbsp;&nbsp;<i style="cursor: pointer;" class="fa fa-plus addItemIcon"></i>
+			<ul>
+				<li class="parent_li">
+				   <input type="text" class="tree-input itemText">&nbsp;&nbsp;
+				    <i style="cursor: pointer;" class="fa fa-minus removeItemIcon"></i>
+        		     <ul></ul>
+			    </li> 
+			    </ul>
+        </li>
+</div>
+<div class="itemBak hidden">
+	<li class="parent_li">
+				   <input type="text" class="tree-input itemText">&nbsp;&nbsp;
+				    <i style="cursor: pointer;" class="fa fa-minus removeItemIcon"></i>
+        		     <ul></ul>
+    </li> 
+</div>
+
+#define($js)
+<script src="/static/javascripts/page/parameter-update.js"></script>
+<script>
+   init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/parameter/list");
+	});
+</script>
+#end

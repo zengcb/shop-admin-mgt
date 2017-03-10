@@ -1,0 +1,184 @@
+<div id="main-menu" role="navigation">
+    <div id="main-menu-inner">
+        <div class="menu-content top" id="menu-content-demo">
+            <!-- Menu custom content demo
+                 CSS:        styles/pixel-admin-less/demo.less or styles/pixel-admin-scss/_demo.scss
+                 Javascript: html//static/demo/demo.js
+             -->
+            <div>
+                <div class="text-bg"><span class="text-slim">欢迎,</span> <span class="text-semibold">$adminContext.name</span></div>
+
+                <img src="/static/images/man.png" alt="" class="">
+                <div class="btn-group">
+                    <a href="" target="_black" class="btn btn-xs btn-primary btn-outline dark" ><i class="fa fa-envelope"></i></a>
+                    <a href="" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
+                    <a href="" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-cog"></i></a>
+                    <a href="/logout.htm" class="btn btn-xs btn-danger btn-outline dark"><i class="fa fa-power-off"></i></a>
+                </div>
+                <a href="#" class="close">&times;</a>
+            </div>
+        </div>
+		#macro(initMenuTree $obj)
+           #foreach($item in ${obj})
+            	#if($item.childs && $!item.childs.size() > 0)
+        			<li class="mm-dropdown">
+        				<a href="javascript:void(0);"><i class="menu-icon fa fa-align-justify"></i><span class="mm-text">$!item.name</span></a>
+						<ul >
+							#initMenuTree($item.childs)
+                        </ul>
+                    </li>
+            	#else
+                    <li>
+                        <a tabindex="-1" href="$!item.preName"><i class="menu-icon fa fa-file"></i><span class="mm-text">$!item.name</span></a>
+        			</li>
+            	#end
+        	#end
+		#end
+		
+       <ul class="navigation">
+          <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-user"></i> <span class="mm-text">会员管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/member"> <i class="menu-icon fa fa-list"></i> <span class="mm-text">会员列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/user"> <i class="menu-icon fa fa-list"></i> <span class="mm-text">用户列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/supplier"> <i class="menu-icon fa fa-list"></i> <span class="mm-text">供应商列表</span></a>
+			        </li>
+			        <!--
+					<li>
+                     <a tabindex="-1" href="/admin/suppliescompany"><i class="menu-icon fa fa-list"></i><span class="mm-text">供应商</span></a>
+					</li> 
+			         <li>
+                     <a tabindex="-1" href="/admin/suppliesadmin"><i class="menu-icon fa fa-list"></i><span class="mm-text">供应商管理</span></a>
+			        </li>-->
+					<li>
+                     <a tabindex="-1" href="/grade"> <i class="menu-icon fa fa-list"></i> <span class="mm-text">会员优惠</span></a>
+			        </li>
+                 </ul>
+          </li>
+		    <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-shopping-cart"></i> <span class="mm-text">商品管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/goods/list">  <i class="menu-icon fa fa-list"></i> <span class="mm-text">商品列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/class/list">  <i class="menu-icon fa fa-list"></i> <span class="mm-text">分类列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/brand/list">  <i class="menu-icon fa fa-list"></i> <span class="mm-text">品牌列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/tag/list">  <i class="menu-icon fa fa-list"></i> <span class="mm-text">标签列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/parameter/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">规格参数管理</span></a>
+			        </li>
+                 </ul>
+           </li>
+		   
+		    <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-euro"></i> <span class="mm-text">订单管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/order/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">订单列表</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/delivery/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">发货管理</span></a>
+			        </li>
+                 </ul>
+            </li>
+			
+			<!-- <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-bookmark"></i> <span class="mm-text">营销管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="#"><i class="menu-icon fa fa-coffee"></i><span class="mm-text">优惠券</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="#"><i class="menu-icon fa fa-coffee"></i><span class="mm-text">促销活动</span></a>
+			        </li>
+                 </ul>
+             </li>-->
+			 
+			 <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-gears"></i> <span class="mm-text">系统管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/safemanager"><i class="menu-icon fa fa-list"></i><span class="mm-text">安全管理</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/admin"><i class="menu-icon fa fa-list"></i><span class="mm-text">系统管理员</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/hsCode"><i class="menu-icon fa fa-list"></i><span class="mm-text">HS码管理</span></a>
+			        </li>
+					<li>
+                     <a tabindex="-1" href="/system/fare"><i class="menu-icon fa fa-list"></i><span class="mm-text">运费管理</span></a>
+			        </li>
+			        <li>
+                     <a tabindex="-1" href="/system/syskey"><i class="menu-icon fa fa-list"></i><span class="mm-text">系统术语</span></a>
+			        </li>
+				    <li class="mm-dropdown">
+                     <a tabindex="-1" href="#"> <i class="menu-icon fa fa-list"></i> <span class="mm-text">平台管理</span></a>
+					  <ul >
+        					<!--<li>
+                             <a tabindex="-1" href="#"><i class="menu-icon fa fa-tasks"></i><span class="mm-text">首页管理</span></a>
+        			        </li>
+							<li>
+                             <a tabindex="-1" href="#"><i class="menu-icon fa fa-tasks"></i><span class="mm-text">商品首页管理</span></a>
+        			        </li>
+							<li>
+                             <a tabindex="-1" href="#"><i class="menu-icon fa fa-tasks"></i><span class="mm-text">底部管理</span></a>
+        			        </li>-->
+							<li>
+                             <a tabindex="-1" href="/recommendation/list"><i class="menu-icon fa fa-file"></i><span class="mm-text">商品推荐管理</span></a>
+        			        </li>
+                      </ul>
+			        </li>
+                 </ul>
+             </li>
+              <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-buysellads"></i> <span class="mm-text">广告位管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/ad"><i class="menu-icon fa fa-list"></i><span class="mm-text">广告位列表</span></a>
+			        </li>
+                 </ul>
+             </li>
+			  <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-columns"></i> <span class="mm-text">内容管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/content/category/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">分类列表</span></a>
+			        </li>
+                 </ul>
+             </li>
+			  <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-dollar"></i> <span class="mm-text">采购单管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/purchase/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">采购单列表</span></a>
+			        </li>
+                 </ul>
+             </li>
+			  <li class="mm-dropdown">
+        	   <a href="javascript:void(0);"> <i class="menu-icon fa fa-calculator"></i> <span class="mm-text">结算管理</span></a>
+				 <ul >
+					<li>
+                     <a tabindex="-1" href="/settlement/list"><i class="menu-icon fa fa-list"></i><span class="mm-text">结算列表</span></a>
+			        </li>
+                 </ul>
+             </li>
+        </ul> <!-- / .navigation -->
+        <div class="menu-content">
+            <a href="#" class="btn btn-primary btn-block btn-outline dark">帮助与解答</a>
+            <br />
+            <span>版权 &copy;尚芽</span>
+        </div>
+    </div> <!-- / #main-menu-inner -->
+</div> <!-- / #main-menu -->

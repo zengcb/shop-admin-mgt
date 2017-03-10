@@ -1,0 +1,601 @@
+#init("新增商品",["商品管理","新增商品"])
+#define($css)
+ <link href="/static/stylesheets/bootstrap.tree.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <link href="/static/javascripts/summernote/summernote.css" rel="stylesheet" type="text/css">
+ <link href="/static/stylesheets/sumoselect.css" rel="stylesheet" type="text/css">
+	
+	
+ <style>
+	.imgArea{
+	position: relative;
+    width: 100px;
+    height: 100px;
+	display:inline-block;
+	cursor:pointer;
+	margin-right:10px;
+}
+	.imgArea .glyphicon-remove{
+	  top:2px;
+	  right:2px;
+	  font-size:14px;
+	  position:absolute;
+	}
+	.imgArea .glyphicon-remove:hover{
+	 color:#00c09e;
+	}
+	.imgArea .glyphicon-ok{
+	 display:none;
+	}
+	.imgArea.selected {
+	 border:2px solid #00c09e;
+	}
+	.imgArea img{
+	 width:100%;
+	 height:100%;
+	}
+	.selected .glyphicon-ok{
+    position: absolute;
+    margin: auto;
+    top: 45%;
+    left: 45%;
+	color:#00c09e;
+	display:inline-block;
+	font-size:16px;
+	}
+	.selected img{
+	 opacity: 0.5;
+	}
+	.radio label{
+	 display:inline-block;
+	 min-width:50px;
+	 margin-right:5px;
+	}
+	.radio input[type=radio]{
+	  margin-top:2px;
+	  margin-left:0px;
+	}
+	.has-error .help-block, .has-success .help-block{
+	 margin-top:6px;
+	}
+    .opt label{
+	 margin-bottom:0px;
+	}
+	.SumoSelect{
+	 width:100%;
+	}
+	.radio-inline{
+	 min-width:60px;
+	}
+	.group-title{
+	 width:100px;
+	}
+	.sizeArea table td .error{
+	 border:1px solid red;
+	}
+	.checkSku{
+	 display:inline-block;
+	}
+	.checkSkuRandom{
+	 display:inline-block;
+	 height: 32px; 
+	 padding: 8px 12px; background: rgb(228, 228, 228);
+	}
+	.skuRandomCode{
+	 width:54px !important;
+	}
+	#treeContent{
+	 position: absolute;
+     z-index: 1010;
+     background-color: #fff;
+     border: 1px solid #ccc;
+     border: 1px solid rgba(0,0,0,.2);
+     width: 100%;
+	}
+ </style>
+#end
+<form id="addItemForm" name="addItemForm">
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                   <div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品分类：</label>
+						<div class="col-md-8 row">
+							<input type="hidden" value="" name="categoryName" id="categoryName">
+							<input type="hidden" value="" name="categoryCode" id="categoryCode">
+							<input type="hidden" value="" name="parentCategoryId" id="parentCategoryId">
+						<select  placeholder="请选择商品分类" class="form-control" id="categoryId" name="categoryId">
+							<option value="">请选择</option>
+							#foreach($category in $categorys)
+								 <optgroup label="$category.name" id="$category.id">
+									 #foreach($childCategory in $category.children)
+										<option value="$childCategory.id" data="$childCategory.code" parentCode="$childCategory.parentCode" >$childCategory.name</option>
+									 #end
+                                 </optgroup>
+							 #end						   
+                         </select>
+						
+						</div>
+						</div>
+					 </div>
+                    </div>
+			       
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+					   <div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品标签：</label>
+						<div class="col-md-8 row">
+						<!--<select multiple="multiple" placeholder="请选择商品标签"  name="tagIds" class="tagId SumoUnder"  tabindex="-1">
+						</select>-->
+						<div style="position:relative;" id="treeArea">
+    						<input type="text" class="form-control tagId" readonly id="tagId" name="tagIds" style="cursor:default;">
+    						<div id="treeContent" style="display:none;">	
+    						<div id="categoryTree"></div>
+    						</div>
+    						</div>
+						</div>
+						</div>
+					 </div>
+                    </div>
+					</div>
+					<div class="row">
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品品牌：</label>
+						<div class="col-md-8 row">
+						<input type="hidden" value="" name="brandName" id="brandName">
+						<select  class="form-control" name="brandId" id="brandId">
+						   <option value="">请选择</option>
+							#foreach($brand in $brands)
+                                <option value="$brand.id">$brand.name</option>
+                            #end						   
+                         </select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+					
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">供应商：</label>
+						<div class="col-md-8 row">
+						<input type="hidden" value="" name="supplierCompanyName" id="supplierCompanyName">
+						<select class="form-control" name="supplierCompanyId" id="supplierCompanyId">
+						   <option value="">请选择 </option>
+							#foreach($supplier in $suppliers)
+                                <option value="$supplier.id">$supplier.name</option>
+                            #end						   
+                         </select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+					</div>
+            </div>
+            </div>
+        </div>
+	
+<div class="col-md-12">
+          <div class="panel colourable">
+			  <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">商品基本信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品名称：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="name" name="name">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			   
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">HS码：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="hsCode" name="hsCode" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			 
+			 
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关编码：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsCode" name="customsCode" style="width:200px;">
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品规格：</label>
+						<div class="col-md-9 row">
+							<label class="radio-inline radioArea">
+                				<input type="radio" value="0" class="px canMutiParam" name="canMutiParam" checked>
+                				<span class="lbl">单规格</span>
+                			</label>
+                			<label class="radio-inline radioArea">
+                				<input type="radio" value="1" class="px canMutiParam" name="canMutiParam" >
+                				<span class="lbl">多规格</span>
+                			</label>
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 
+			
+			 <div class="row multipleParam" style="display:none;">
+				   <div class="col-md-12">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-2 control-label no-padding-right no-padding-left" style="width:12.5%;">规格参数：</label>
+						<div class="col-md-9 row sizeArea">
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+					
+             </div>
+			 
+			
+             <div class="row singleParam">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">德国价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="mprice"  id="mprice">
+							<input type="text" class="form-control" id="mpriceTemp" name="mpriceTemp" style="width:200px;display:inline-block;"><span>&nbsp€</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row singleParam">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品购买价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="buyPrice"  id="buyPrice">
+							<input type="text" class="form-control" readonly id="buyPriceTemp"  name="buyPriceTemp" style="width:200px;display:inline-block;text-align:center;"><span>&nbsp¥</span>
+                           </div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			   <div class="row singleParam">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">SKU码：</label>
+						<div class="col-md-9 row input-group" style="width:254px;">
+							<input type="hidden" name="skuCode" class="skuCode"  id="skuCode">
+							<input type="text" class="form-control skuCustomCode" name="skuCustomCode" style="display:inline-block;">
+							<span class='input-group-addon skuRandomCode'></span>
+							
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			 <div class="row singleParam">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品库存：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="num" name="num" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品图片：</label>
+						<div class="col-md-9 row">
+							 <div class="btn btn-default btn-file" style="width:200px;text-align:center">
+													<span class="uploadTips">添加图片</span>
+													<input type="file" name="originalUpload" class="originalUpload" id="originalUpload">
+							  </div>
+							  <small class="help-block noPicError"   style="display: none;width:200px;">请上传商品图片</small>
+							  <small class="help-block noDefaultPicError"   style="display: none;width:200px;">请为商品选择默认图片</small>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row "><!--hidden picDetailArea-->
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left"></label>
+						<div class="col-md-9 row displayArea">
+
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品德文介绍：</label>
+						<div class="col-md-9 row">
+							<textarea class="form-control"  id="gitemDesc" name="itemDesc.gitemDesc"></textarea>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+	          <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品中文介绍：</label>
+						<div class="col-md-9 row">
+							<textarea class="form-control"  id="citemDesc" name="itemDesc.citemDesc"></textarea>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品产地：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="area" name="area" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品毛重：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="grossWeight" name="grossWeight" style="width:200px;display:inline-block;"><span>&nbsp;kg</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品体积：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gVolume" name="gVolume" style="width:200px;display:inline-block;"><span>&nbsp;平方米</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">进口税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control rateCalculate" id="importRate" name="importRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">消费税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="consumptionRate" name="consumptionRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">增值税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="vatRate" name="vatRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  
+			  
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">发货方式：</label>
+						<div class="col-md-9 row">
+							
+							<label class="radio-inline">
+											<input type="radio" name="deliveryWay"  value="0" class="px" checked >
+											<span class="lbl">海外直邮</span>
+							</label>
+							<label class="radio-inline">
+											<input type="radio" name="deliveryWay"  value="1" class="px">
+											<span class="lbl">保税仓</span>
+							</label>
+							<label class="radio-inline">
+											<input type="radio" name="deliveryWay"  value="2" class="px">
+											<span class="lbl">其他</span>
+							</label>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			   <div class="row hidden bscRow">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关货号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsNum" name="customsNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			    <div class="row hidden bscRow">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关备案号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsBakNum" name="customsBakNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			   <div class="row hidden bscRow">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">国检货号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gCheckNum" name="gCheckNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row hidden bscRow">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">国检备案号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gBakNum" name="gBakNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  
+			
+	
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">物流费：</label>
+						<div class="col-md-9 row">
+							<input type="hidden"  name="logisticsPrice" id="logisticsPrice">
+							<input type="text" class="form-control" readonly  id="logisticsPriceTemp" name="logisticsPriceTemp"  style="width:200px;display:inline-block;"><span>&nbsp;¥</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">选择运费模板：</label>
+						<div class="col-md-9 row">
+							<select class="form-control" id="logisticsId" name="logisticsId" style="width:200px;">
+								<option value="">请选择</option>
+								#foreach($template in $templateList)
+                                <option value="$template.id">$template.name</option>
+								#end
+							</select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			   <div class="row" style="margin:20px 0px;">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<label class="col-md-3 control-label no-padding-right no-padding-left"></label>
+						<div class="col-md-9" style="text-align:center;">
+						  <button class="btn btn-primary saveBtn" type="button">保存</button>
+    					  <button class="btn btn-primary saveOnlineBtn" type="button">保存并上架</button>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+            </div>
+            </div>
+	</div>
+</form>
+
+<div id="imgBak" class="hidden">
+  	 <div class="imgArea">
+		<input type="hidden" class="name" name="itemImageList[0].name">
+		<input type="hidden" class="imagePath" name="itemImageList[0].imagePath">
+		<input type="hidden" class="canDefault" name="itemImageList[0].canDefault" value="0">
+		<img src="">
+        <i class="glyphicon glyphicon-ok"></i>
+		<i class="glyphicon glyphicon-remove"></i>
+      </div>
+</div>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+<script src="/static/javascripts/summernote/summernote.min.js"></script>
+<script src="/static/javascripts/jstree/jstree.min.js"></script>
+<script src="/static/javascripts/summernote/lang/summernote-de-DE.min.js"></script>
+<script src="/static/javascripts/summernote/lang/summernote-zh-CN.min.js"></script>
+<script src="/static/javascripts/jquery.sumoselect.js"></script>
+<script src="/static/javascripts/page/goods-add.js"></script>
+
+<script>
+    var imgUrl="$imgUrl"
+     init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/goods/list");
+	});
+
+</script>
+</script>
+#end

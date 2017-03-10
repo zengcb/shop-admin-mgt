@@ -1,0 +1,24 @@
+#init("",["会员管理","会员优惠"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">会员列表</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+ 
+<div class="panel-body">
+<div class="col-md-6 col-sm-6">
+	<a href="/grade/add" class="btn btn-primary">添加会员类型</a>
+</div>
+<div class="col-md-12 col-sm-12" style="margin-top:20px">
+     <div id="record"></div>
+ </div>    
+</div>
+</div>
+#define($js)
+<script src="/static/javascripts/jstree/jstree.min.js"></script>
+<script src="/static/javascripts/page/member/grade-list.js"></script>
+#end

@@ -1,0 +1,26 @@
+#set($layout="inc/blank.vm")
+
+#if($data.size()>0)
+<input type="hidden" name="itemParamId" value="$!itemParamId">
+	#foreach($obj in $data)
+		<div class="radio paramGroup" data="$obj.group"> 
+		 <label class="radio-inline">$obj.group：</label>
+		  #foreach($item in $obj.params)
+			<label class="radio-inline radioArea">
+				<input type="checkbox"  value="$item" class="px" name="radio$obj.group" group="$obj.group">
+				<span class="lbl">$item</span>
+			</label>
+			  
+		  #end
+		</div>
+		<hr/>
+	#end
+	
+#else
+	<label class="control-label no-padding-right no-padding-left" style="font-weight: 400;">暂无规格参数</label>
+#end
+
+
+
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+</table>

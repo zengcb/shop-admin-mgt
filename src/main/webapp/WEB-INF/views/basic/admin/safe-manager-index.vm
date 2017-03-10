@@ -1,0 +1,184 @@
+#init("",["权限管理","安全管理"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<div class="panel colourable">
+    <div class="panel-heading">
+        <span class="panel-title"><b id="dept_name">账号信息</b></span>
+         <div class="panel-heading-controls">
+        </div>
+    </div>
+ 	
+	 <div class="row" style="margin-top:10px;">
+        <div class="col-md-12">
+		  <div class="form-horizontal">
+			<label class="col-md-2 control-label no-padding-right no-padding-left">登陆账号：</label>
+			<div class="col-md-8 row no-padding-left">
+				<label class="control-label no-padding-right no-padding-left">$!user.name</label>
+			</div>
+		 </div>
+        </div>
+	 </div>
+	 <div class="row" style="margin-top:10px;">
+        <div class="col-md-12">
+		  <div class="form-horizontal">
+			<label class="col-md-2 control-label no-padding-right no-padding-left">管理员姓名：</label>
+			<div class="col-md-8 row no-padding-left">
+				<label class="control-label no-padding-right no-padding-left">$!user.realName</label>
+			</div>
+		 </div>
+        </div>
+	 </div>
+	 <div class="row" style="margin-top:10px;margin-bottom:10px;">
+        <div class="col-md-12">
+		  <div class="form-horizontal">
+			<label class="col-md-2 control-label no-padding-right no-padding-left">&nbsp;</label>
+			<div class="col-md-8 row no-padding-left">
+				<a type="button" class="btn btn-sm btn-primary changePasswordBtn">修改密码</a>
+			</div>
+		 </div>
+        </div>
+	 </div>
+</div>
+
+<div id="change-password-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+				<form class="form-horizontal" id="changePasswordForm">
+					<div class="form-group">
+                        <label class="col-sm-3 control-label">登录账号：</label>
+						<div class="col-sm-8" style="padding-left:0px;">
+							<input class="form-control" value="$!user.name" type="text" readonly>
+						</div>
+					</div> <!-- / .form-group -->
+					<div class="form-group" >
+						<label class="col-sm-3 control-label">旧密码：</label>
+						<div class="col-sm-8" style="padding-left:0px;">
+							<input class="form-control" value="" id="oldPassword" type="password" name="oldPassword">
+						</div>
+					</div> <!-- / .form-group -->
+					<div class="form-group">
+						<label class="col-sm-3 control-label">新密码：</label>
+						<div class="col-sm-8" style="padding-left:0px;">
+							<input class="form-control" value="" id="newPassword" name="newPassword" type="password">
+						</div>
+					</div>
+						<div class="form-group" >
+						<label class="col-sm-3 control-label">确认密码：</label>
+						<div class="col-sm-8" style="padding-left:0px;">
+							<input class="form-control" value="" id="reNewPassword" name="reNewPassword" type="password">
+						</div>
+					</div>
+                </form>
+            </div>
+            <!-- / .modal-body -->
+            <div class="modal-footer" style="text-align:center;">
+                <button type="button" class="btn btn-primary" id="submitChangeForm">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div> <!-- /.modal -->
+#define($js)
+<script>
+
+  $(function(){
+         $('#changePasswordForm').bootstrapValidator({
+        message: 'This value is not valid',
+       feedbackIcons: {
+           valid: 'glyphicon glyphicon-ok',
+           invalid: 'glyphicon glyphicon-remove',
+           validating: 'glyphicon glyphicon-refresh'
+       },
+       live: 'enabled',
+       message: 'This value is not valid',
+       submitButtons: 'button[type="submit"]',
+       submitHandler: null,
+       fields:{
+    	  oldPassword:{
+               validators:{
+               	notEmpty : {
+                       message : '旧密码不能为空'
+                   },
+				stringLength: {    
+                    min: 6,
+                    max: 20,
+                    message: '密码长度为6-20'
+                }
+               }
+			   
+           },
+           newPassword:{
+               validators:{
+               	notEmpty : {
+                       message : '新密码不能为空'
+                   },
+				stringLength: {    
+                    min: 6,
+                    max: 20,
+                    message: '密码长度为6-20'
+                }
+               }
+			   
+           },
+           reNewPassword: {
+           	validators: {
+	            	notEmpty: {
+	            		message: '确认密码不能为空'
+	            	},
+					stringLength: {    
+                    min: 6,
+                    max: 20,
+                    message: '密码长度为6-20'
+                   },
+	            	identical: {
+	            		field: 'newPassword',
+	            		message: '两次输入密码不一致'
+           		}
+           	}
+           }
+       }
+   });
+   
+  });
+
+  $(".changePasswordBtn").on("click",function(){
+    $("#change-password-modal").modal("show");
+  });
+  $("#submitChangeForm").on("click",function(){
+   var flag=$("#changePasswordForm").data('bootstrapValidator').validate().isValid();
+   if(flag){
+     var oldPassword = $("#oldPassword").val();
+	 var newPassword = $("#newPassword").val();
+     var jsonData={
+	  oldPassword:oldPassword,
+	  newPassword:newPassword
+	 };
+      $.ajax({
+		url:'/changePassword',
+		type:'POST',
+		data:jsonData,
+		success:function(result){
+			if(result=="ok"){
+                $.msg("修改密码成功");
+				 $("#change-password-modal").modal("hide");
+                setTimeout(function(){window.location.reload();},1000);
+			}else if(result=="errorPassword"){
+			  $.err("旧密码错误");
+			}else{
+			   $.err(result.status);
+            }
+		}
+	})
+   
+   }
+  });
+</script>
+#end

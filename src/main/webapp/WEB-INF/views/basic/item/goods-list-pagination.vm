@@ -1,0 +1,80 @@
+#set($layout="inc/blank.vm")
+
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+
+        <tr>
+		  <th><input type="checkbox" name="checkAll" class="checkAll"></th>
+		  <th>ID</th>
+		  <th>供应商</th>
+          <th>商品名称</th>
+          <th>所属分类</th>
+          <th>所属品牌</th>
+          <th>所属标签</th>
+		  <th>德国价</th>
+		  <th>商品库存</th>
+		  <th>总销量</th>
+		  <th>修改时间</th>
+		  <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageInfo.recordList.size()==0)
+		<tr>
+			<td colspan="12" style="text-align:center">无数据</td>
+		</tr>
+		#else
+		#foreach($item in $pageInfo.recordList)
+			<tr data="$item.id">
+				 <td><input type="checkbox" name="checkAll" class="itemCheckbox"></td>
+				 <td>$!item.id</td>
+				 <td>$!item.supplierCompanyName</td>
+			     <td><a href="http://www.sonnenjahr.com/detail?itemId=$!item.id" target="_blank">$!item.name</a></td>
+				 <td>$!item.categoryName</td>
+				 <td>$!item.brandName</td>
+				 <td>
+				   #foreach($tag in $item.itemTagList)
+					  #if($velocityCount==1)
+						 $tag.tagName
+					  #else
+						 $tag.tagName
+					  #end
+					 
+				   #end
+				 </td>
+				 <td><a href="#" data-pk="1" data-url="/goods/updateMprice?itemId=$!item.id" data-type="text"  data-title="修改价格" class="editable editable-click editable-empty">$velocityTool.formatMoney($!item.mprice)</a> €</td>
+				 <td><a href="#" data-pk="1" data-url="/goods/updateNum?itemId=$!item.id" data-type="text" data-title="修改库存" class="editable editable-click editable-empty">$!item.num</a></td>
+				 <td></td>
+				 <td>$velocityTool.getTime($!item.updated)</td>
+				 <td>
+				      <button class="btn btn-sm btn-primary updateBtn">编辑</button>
+				   #if($!item.status==0)
+					<button class="btn btn-sm btn-primary onlineBtn" data="1">下架</button>
+				   #end
+				   #if($!item.status==1)
+					<button class="btn btn-sm btn-primary offlineBtn" data="0">上架</button>
+					<button class="btn btn-sm btn-primary deleteBtn">删除</button>
+				   #end
+				 </td>
+					
+            </tr>
+			#end
+        #end
+      </tbody>
+      </thead>
+</table>
+#pageNation($pageInfo)
+<script>
+    $.fn.editable.defaults.mode = 'popup';
+	$.fn.editable.defaults.ajaxOptions = {type: "GET"};
+    $('.editable').editable({
+	  validate: function (value) { //字段验证
+	             var regexp=new RegExp("^\\d+(\\.\\d+)?$");
+                if (!$.trim(value)) {
+                    return '不能为空';
+                }
+				if(!regexp.test(value)){
+				  return "格式错误";
+			     }
+            }
+	});
+</script>

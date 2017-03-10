@@ -1,0 +1,27 @@
+#set($layout="inc/blank.vm")
+	<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+	<thead>
+	        <tr>
+	          <th>编号</th>
+	          <th>术语类型</th>
+	          <th>术语名称</th>
+	          <th>操作</th>
+	        </tr>
+			<tbody>
+			#if($pageInfo.size()==0)
+				<tr>
+					<td colspan="4">占无数据</td>
+				</tr>
+			#else
+				#foreach($obj in $pageInfo)
+					<tr>
+						<td>$!velocityCount</td>
+						<td>$!obj.keyName</td>
+						<td>$!obj.keyValue</td>
+						<td><a href="/system/syskey/modify?id=$!obj.id">修改</a></td>
+			        </tr>
+				#end
+			#end
+	      </tbody>
+	      </thead>
+	</table>

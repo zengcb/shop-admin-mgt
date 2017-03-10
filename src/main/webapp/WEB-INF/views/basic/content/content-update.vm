@@ -1,0 +1,164 @@
+#init("新建内容",["分类管理","分类列表","新建内容"])
+#define($css)
+ <link href="/static/javascripts/summernote/summernote.css" rel="stylesheet" type="text/css">
+ <style>
+	.imgArea{
+	position: relative;
+    width: 100px;
+    height: 100px;
+	display:inline-block;
+	cursor:pointer;
+	margin-right:10px;
+}
+	.imgArea .glyphicon-remove{
+	  top:2px;
+	  right:2px;
+	  font-size:14px;
+	  position:absolute;
+	}
+	.imgArea .glyphicon-remove:hover{
+	 color:#00c09e;
+	}
+	.imgArea .glyphicon-ok{
+	 display:none;
+	}
+	.imgArea.selected {
+	 border:2px solid #00c09e;
+	}
+	.imgArea img{
+	 width:100%;
+	 height:100%;
+	}
+	.selected .glyphicon-ok{
+    position: absolute;
+    margin: auto;
+    top: 45%;
+    left: 45%;
+	color:#00c09e;
+	display:inline-block;
+	font-size:16px;
+	}
+	.selected img{
+	 opacity: 0.5;
+	}
+	.checkbox label{
+	 display:inline-block;
+	 min-width:50px;
+	 margin-right:5px;
+	}
+	.checkbox input[type=checkbox]{
+	  margin-top:2px;
+	  margin-left:0px;
+	}
+	.has-error .help-block, .has-success .help-block{
+	 margin-top:6px;
+	}
+	
+
+:hov
+
+
+.cls
+
+element.style {
+}
+.note-editor.note-frame {
+    border: 1px solid #a9a9a9;
+}
+.theme-clean .table, .theme-clean .panel, .theme-clean hr {
+    border-color: #dcdcdc;
+}
+.note-editor {
+    position: relative;
+}
+.note-editor {
+    border: 1px solid #d6d6d6;
+    background: #fff;
+}
+.panel, .panel-default{
+ margin-bottom:0px;
+
+} 
+ </style>
+#end
+<div class="panel colourable">
+  <div class="panel-heading">
+      <span class="panel-title"><b id="dept_name">$!category.name</b></span>
+     <div class="panel-heading-controls">
+     </div>
+  </div>
+ <div class="panel-body">
+<form class="form-horizontal" role="form" style="margin-top:10px" id="updateForm">
+  <input type="hidden"  id="categoryId" value="$!category.id"  name="categoryId" >
+  <input type="hidden"  id="contentId" value="$!content.id"  name="id">
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">内容标题：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+    	 <input type="text"  id="title"  name="title" value="$!content.title" class="form-control">
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-2 control-label">内容链接：</label>
+    <div class="col-sm-6">
+    	<input type="text"  id="url" name="url" value="$!content.url" class="form-control">
+    </div>
+  </div>
+  <div class="form-group" id="pic">
+    <label for="inputPassword" class="col-sm-2 control-label">内容图片：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+     <div class="btn btn-default btn-file" style="width:200px;text-align:center">
+		<span class="uploadTips">添加图片</span>
+		<input type="file" name="originalUpload" class="originalUpload" id="originalUpload">
+     </div>
+		<small class="help-block noPicError"   style="display: none;width:200px;">请上传商品图片</small>
+    </div>
+  </div>
+  	<div class="form-group">
+		<label class="col-md-2 control-label no-padding-right no-padding-left"></label>
+		<div class="col-md-9 displayArea">
+			<div class="imgArea">
+    		  <input type="hidden" class="picName" name="picName" id="picName">
+    		  <input type="hidden" class="picUrl" name="pic"  id="picUrl" value="$!content.pic">
+    		<img src="$!imgUrl/$!content.pic" />
+            <i class="glyphicon glyphicon-ok"></i>
+    		<i class="glyphicon glyphicon-remove"></i>
+          </div>
+		</div>
+	</div>
+  	<div class="form-group contentDiv">
+        <label class="col-sm-2 control-label">内容：</label>
+        <div class="col-sm-6">
+			<textarea class="form-control"  id="content" name="content">$!content.content</textarea>
+        </div>
+  </div>
+
+    <div class="form-group">
+    	<label  class="col-sm-2 control-label"></label>
+    <div class="col-sm-10 "  style="margin-top:4px" >
+		<button type="button" class="btn btn-primary" id="update" >保存</button>
+		<button type="button" class="btn btn-default" onclick="history.go(-1);">返回</button>
+    </div>
+    </div>
+</form>
+<div id="imgBak" class="hidden">
+  	 <div class="imgArea">
+		<input type="hidden" class="picName" name="picName" id="picName">
+		<input type="hidden" class="picUrl" name="pic"  id="picUrl">
+		<img src="" id="picUrl"/>
+        <i class="glyphicon glyphicon-ok"></i>
+		<i class="glyphicon glyphicon-remove"></i>
+      </div>
+ </div>
+</div>
+</div>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+<script src="/static/javascripts/summernote/summernote.min.js"></script>
+<script src="/static/javascripts/summernote/lang/summernote-zh-CN.min.js"></script>
+<script src="/static/javascripts/page/content/content-update.js"></script>
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/content/category/list");
+	});
+</script>
+#end

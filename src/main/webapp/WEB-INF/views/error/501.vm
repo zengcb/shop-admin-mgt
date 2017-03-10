@@ -1,0 +1,16 @@
+#init("",["没有权限"])
+            <div class="page-body">
+                               <div class="row" >
+								 <div class="col-md-3"></div>
+								  <div class="col-md-7">
+                                  <div class="col-lg-2 col-sm-12 col-xs-12 text-align-center"><i class="fa fa-meh-o" style="font-size:100px"></i></div>
+    							  <div class="col-lg-10 col-sm-12 col-xs-12 ">
+                                    <h1>对不起,您的权限不足！</h1>
+    							    <h5 class="white">
+    									<a style="cursor:pointer"  onclick="history.go(-1)">请点此返回</a>
+    								</h5>
+    							  </div>
+                                  </div>
+							   <div class="col-md-2"></div>
+                </div>
+            </div>

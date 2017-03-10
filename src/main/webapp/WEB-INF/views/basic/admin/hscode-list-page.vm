@@ -1,0 +1,32 @@
+#set($layout="inc/blank.vm")
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+
+        <tr>
+          <th width="20"></th>
+          <th>HS码内容</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageBean.recordList.size()==0)
+		<tr>
+			<td colspan="3" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageBean.recordList)
+		 	<td><input type="checkbox" class="hs" value="$obj.id"></td>
+			<td>$!obj.name</td>
+			<td>#if($!obj.status=="0")启用#else停用#end
+			</td>
+          <td>
+          	<a class="edit"   href="/hscode/modify?hsCodeId=$!obj.id">编辑</a>
+          	<a class="block" href="#" id='$!obj.id'>#if($!obj.status=="0")停用#else启用#end</a>
+          </td>
+        </tr>
+           #end
+        #end
+      </tbody>
+      </thead>
+</table>
+#pageNation($pageBean)

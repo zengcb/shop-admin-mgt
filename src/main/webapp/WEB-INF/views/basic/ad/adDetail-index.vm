@@ -1,0 +1,54 @@
+#init("广告位列表",["广告位管理","广告位列表"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<div class="panel colourable">
+<div class="panel-body">
+<div class="col-md-6 col-sm-6">
+	<a href="/addetail/add?adId=$!adId" class="btn btn-primary">新增广告</a>
+	<a href="/ad" class="btn btn-primary">返回上一级</a>
+</div>
+<div class="col-md-12 col-sm-12" style="margin-top:20px">
+     <div id="record">
+     	<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+
+        <tr>
+          <th>排序</th>
+          <th>位置</th>
+          <th>链接</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageInfo.size()==0)
+		<tr>
+			<td colspan="5" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageInfo)
+		<tr>
+		 	<td>$!obj.sort</td>
+			<td>$!obj.name</td>
+			<td>$!obj.link</td>
+          <td>
+          	<a class="edit"   href="/addetail/modify?adDetailId=$!obj.id&&adId=$!adId" >编辑</a>
+          	<a class="del" href="#" value='$!obj.id'>删除</a>
+          </td>
+        </tr>
+           #end
+        #end
+      </tbody>
+      </thead>
+</table>
+     </div>
+ </div>    
+ </div>           
+</div>
+#define($js)
+<script src="/static/javascripts/page/ad/addetail-list.js"></script>
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/ad");
+	});
+</script>
+#end

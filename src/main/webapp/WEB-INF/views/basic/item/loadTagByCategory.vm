@@ -1,0 +1,12 @@
+#set($layout="inc/blank.vm")
+#foreach($tag in $tagList)
+	#if($tag.children.size()>0)
+	 <optgroup label="$tag.name">
+		 #foreach($childTag in $tag.children)
+			<option value="$childTag.id" parentCode="$childTag.parentCode" >$childTag.name</option>
+		 #end
+     </optgroup>
+	#else
+		<option value="$tag.id">$tag.name</option>
+	#end
+#end

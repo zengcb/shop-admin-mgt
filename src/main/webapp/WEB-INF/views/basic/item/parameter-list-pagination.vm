@@ -1,0 +1,42 @@
+#set($layout="inc/blank.vm")
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+
+        <tr>
+          <th>商品分类</th>
+          <th>参数名称</th>
+          <th>参数规格</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageInfo.size()==0)
+		<tr>
+			<td colspan="4" style="text-align:center">无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageInfo)
+			<tr data="$obj.id">
+			<td  rowspan="$obj.dataArray.size()">$!obj.categoryName</td>
+			#foreach($detailObj in $obj.dataArray)
+				#if($velocityCount==1)
+					<td style="text-align:center;">$detailObj.group</td>
+					<td style="text-align:center;">$velocityTool.jsonArrayToString($!detailObj.params)</td>
+			        <td style="text-align:center;" rowspan="$obj.dataArray.size()">
+					  <button class="btn btn-sm btn-danger deleteBtn">删除</button>
+					  <button class="btn btn-sm btn-primary updateBtn" >修改</button>
+					</td>  
+			    </tr>
+			    #else
+					<tr>
+        				<td style="text-align:center;">$detailObj.group</td>
+        				<td style="text-align:center;">$velocityTool.jsonArrayToString($!detailObj.params)</td>
+					</tr>	
+				#end
+					
+			#end
+        </tr>
+           #end
+        #end
+      </tbody>
+      </thead>
+</table>

@@ -1,0 +1,49 @@
+#set($layout="inc/blank.vm")
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+
+        <tr>
+          <th>序号</th>
+          <th>管理员名字</th>
+          <th>管理员状态</th>
+		  <th>管理员类型</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageInfo.size()==0)
+		<tr>
+			<td colspan="5" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageBean.recordList)
+		 	<td>$velocityCount</td>
+			<td>$!obj.name</td>
+			<td>
+				#if($!obj.status=="0")
+					正常
+				#else
+					锁定
+				#end
+			</td>
+			<td>
+				#if($!obj.superAdmin=="0")
+					超级管理员
+				#else
+					普通
+				#end
+			</td>
+          <td>
+			#if($!obj.superAdmin==1)
+          	 <a class="edit"   href="/admin/modify?id=$!obj.id">编辑</a>
+			 <a class="showChangeModal"   href="javascript:void(0);" data="$obj.id">修改密码</a>
+          	 <a class="block" href="javascript:void(0);" id='$!obj.id'>#if($!obj.status=="0")锁定#else 解锁 #end</a>
+			 <a class="delete"   href="javascript:void(0);" data="$obj.id">删除</a>		
+            #end
+		  </td>
+        </tr>
+           #end
+        #end
+      </tbody>
+      </thead>
+</table>
+#pageNation($pageBean)

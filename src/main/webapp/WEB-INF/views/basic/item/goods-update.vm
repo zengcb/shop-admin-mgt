@@ -1,0 +1,657 @@
+#init("更新商品",["商品管理","更新商品"])
+#define($css)
+ <link href="/static/stylesheets/bootstrap.tree.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <link href="/static/javascripts/summernote/summernote.css" rel="stylesheet" type="text/css">
+ <link href="/static/stylesheets/sumoselect.css" rel="stylesheet" type="text/css">
+ <style>
+	.imgArea{
+	position: relative;
+    width: 100px;
+    height: 100px;
+	display:inline-block;
+	cursor:pointer;
+	margin-right:10px;
+}
+	.imgArea .glyphicon-remove{
+	  top:2px;
+	  right:2px;
+	  font-size:14px;
+	  position:absolute;
+	}
+	.imgArea .glyphicon-remove:hover{
+	 color:#00c09e;
+	}
+	.imgArea .glyphicon-ok{
+	 display:none;
+	}
+	.imgArea.selected {
+	 border:2px solid #00c09e;
+	}
+	.imgArea img{
+	 width:100%;
+	 height:100%;
+	}
+	.selected .glyphicon-ok{
+    position: absolute;
+    margin: auto;
+    top: 45%;
+    left: 45%;
+	color:#00c09e;
+	display:inline-block;
+	font-size:16px;
+	}
+	.selected img{
+	 opacity: 0.5;
+	}
+	.radio label{
+	 display:inline-block;
+	 min-width:50px;
+	 margin-right:5px;
+	}
+	.radio input[type=radio]{
+	  margin-top:2px;
+	  margin-left:0px;
+	}
+	.has-error .help-block, .has-success .help-block{
+	 margin-top:6px;
+	}
+	 .opt label{
+	 margin-bottom:0px;
+	}
+	.SumoSelect{
+	 width:100%;
+	}
+	.radio .radio-inline{
+	 min-width:60px;
+	}
+	.group-title{
+	 width:100px;
+	}
+	
+	.sizeArea table td .error{
+	 border:1px solid red;
+	}
+	.checkSku{
+	 display:inline-block;
+	}
+	.checkSkuRandom{
+	 display:inline-block;
+	 height: 32px; 
+	 padding: 8px 12px; background: rgb(228, 228, 228);
+	}
+	.skuRandomCode{
+	 width:54px !important;
+	}
+	.deleteParamIcon{
+	  cursor:pointer;
+	}
+		#treeContent{
+	 position: absolute;
+     z-index: 1010;
+     background-color: #fff;
+     border: 1px solid #ccc;
+     border: 1px solid rgba(0,0,0,.2);
+     width: 100%;
+	}
+ </style>
+#end
+<form id="updateItemForm" name="updateItemForm">
+	<input type="hidden" value="$item.id" name="id">
+	<input type="hidden" value="$item.status" name="status">
+	<input type="hidden" value="$!item.version" name="version">
+<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                   <div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品分类：</label>
+						<div class="col-md-8 row">
+							<input type="hidden" value="$!item.categoryName" name="categoryName" id="categoryName">
+							<input type="hidden" value="$!item.categoryCode" name="categoryCode" id="categoryCode">
+						    <input type="hidden" value="$!item.parentCategoryId" name="parentCategoryId" id="parentCategoryId">
+						<select class="form-control" id="categoryId" name="categoryId" disabled  readonly>
+							#foreach($category in $categorys)
+								 <optgroup label="$category.name">
+									 #foreach($childCategory in $category.children)
+										<option value="$childCategory.id"  #if($item.categoryId==$childCategory.id) selected #end data="$childCategory.code" parentCode="$childCategory.parentCode" >$childCategory.name</option>
+									 #end
+                                 </optgroup>
+							 #end						   
+                         </select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			       
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品标签：</label>
+						<div class="col-md-8 row">
+						    <!--<select multiple="multiple" placeholder="请选择商品标签" name="tagIds" class="tagId SumoUnder"  tabindex="-1">
+							 #foreach($tag in $tags)
+                            	#if($tag.children.size()>0)
+                            	 <optgroup label="$tag.name">
+                            		 #foreach($childTag in $tag.children)
+                            			<option value="$childTag.id" parentCode="$childTag.parentCode" #if($!childTag.checked==true) key="$!childTag.key" class="selected" selected #end >$childTag.name</option>
+                            		 #end
+                                 </optgroup>
+                            	#else
+                            		<option value="$tag.id" #if($!tag.checked==true) key="$!tag.key" class="selected" selected #end>$tag.name</option>
+                            	#end
+                            #end
+                          </select>-->
+							<div style="position:relative;" id="treeArea">
+    						 <input type="text" class="form-control tagId"  id="tagId" name="tagIds" >
+    						<div id="treeContent" style="display:none;">	
+        						<div id="categoryTree"></div>
+        						</div>
+    						</div>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			</div>
+			<div class="row">
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">商品品牌：</label>
+						<div class="col-md-8 row">
+						<input type="hidden" value="$item.brandName" name="brandName" id="brandName">
+						<select class="form-control" name="brandId" id="brandId">
+						   <option value="">请选择</option>
+							#foreach($brand in $brands)
+                                <option value="$brand.id" #if($item.brandId==$brand.id) selected #end>$brand.name</option>
+                            #end						   
+                         </select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+                    
+					<div class="col-md-4">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-4 control-label no-padding-right no-padding-left">供应商：</label>
+						<div class="col-md-8 row">
+						<input type="hidden" value="$!item.supplierCompanyName" name="supplierCompanyName" id="supplierCompanyName">
+						<select class="form-control" name="supplierCompanyId" id="supplierCompanyId">
+						   <option value="">请选择 </option>
+							#foreach($supplier in $suppliers)
+                                <option value="$supplier.id" #if($item.supplierCompanyId==$supplier.id) selected #end>$supplier.name</option>
+                            #end						   
+                         </select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+	</div>
+	
+<div class="col-md-12">
+
+
+          <div class="panel colourable">
+			  <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">商品基本信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品名称：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="name" value="$!item.name" name="name">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">HS码：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="hsCode" value="$!item.hsCode" name="hsCode" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  
+			 
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关编码：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsCode" name="customsCode" value="$!item.customsCode" style="width:200px;">
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			   <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品规格：</label>
+						<div class="col-md-9 row">
+							#if($!item.canMutiParam==0)
+						   <label class="radio-inline radioArea">
+                				<input type="radio" value="0" class="px canMutiParam" name="canMutiParam"  checked >
+                				<span class="lbl">单规格</span>
+                			</label>
+							#end
+							#if($!item.canMutiParam==1)
+                			<label class="radio-inline radioArea">
+                				<input type="radio" value="1" class="px canMutiParam" name="canMutiParam" checked >
+                				<span class="lbl">多规格</span>
+                			</label>
+							#end
+
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 	 #if($!item.canMutiParam==1)
+			 <div class="row multipleParam">
+				   <div class="col-md-12">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-2 control-label no-padding-right no-padding-left" style="width:12.5%;">规格参数：</label>
+						<div class="col-md-9 row sizeArea">
+                                #if($allParam.size()>0)
+                                <input type="hidden" name="itemParamId" value="$!itemParamId">
+                                	#foreach($obj in $allParam)
+                                		<div class="radio paramGroup" data="$obj.group"> 
+                                		 <label class="radio-inline">$obj.group：</label>
+                                		  #foreach($item in $obj.params)
+                                			<label class="radio-inline radioArea">
+                                				<input type="checkbox" data="$obj.group$item" value="$item" class="px" name="radio$obj.group" group="$obj.group">
+                                				<span class="lbl">$item</span>
+                                			</label>
+                                			  
+                                		  #end
+                                		</div>
+                                		<hr/>
+                                	#end
+                                	
+                                #else
+                                	<label class="control-label no-padding-right no-padding-left" style="font-weight: 400;">暂无规格参数</label>
+								#end
+								<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+                                </table>
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+					
+             </div>
+			 #end
+
+			
+             <div class="row singleParam #if($!item.canMutiParam==1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">德国价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="mprice"  id="mprice" value="$!item.mprice">
+							<input type="text" class="form-control" id="mpriceTemp" name="mpriceTemp" value="$velocityTool.formatMoney($!item.mprice)"  style="width:200px;display:inline-block;"><span>&nbsp€</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row #if($!item.canMutiParam==1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品购买价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="buyPrice"  id="buyPrice" value="$!item.buyPrice">
+							<input type="text" class="form-control" id="buyPriceTemp"  readonly  value="$velocityTool.formatMoney($!item.buyPrice)" style="width:200px;display:inline-block;"><span>&nbsp¥</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  <div class="row singleParam #if($!item.canMutiParam==1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">SKU码：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="skuCode" value="$!item.skuCode" name="skuCode" style="width:200px;" readonly >
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			 <div class="row singleParam #if($!item.canMutiParam==1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品库存：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="num" value="$!item.num" name="num" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品图片：</label>
+						<div class="col-md-9 row">
+							 <div class="btn btn-default btn-file" style="width:200px;text-align:center">
+													<span class="uploadTips">添加图片</span>
+													<input type="file" name="originalUpload" class="originalUpload" id="originalUpload">
+							  </div>
+							  <small class="help-block noPicError"   style="display: none;width:200px;">请上传商品图片</small>
+							  <small class="help-block noDefaultPicError"   style="display: none;width:200px;">请为商品选择默认图片</small>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row "><!--hidden picDetailArea-->
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left"></label>
+						<div class="col-md-9 row displayArea">
+						 #if($!item.itemImageList.size()>0)
+							#foreach($image in $!item.itemImageList)
+							   	 <div #if($image.canDefault==1) class="imgArea selected" #else class="imgArea" #end >
+									<input type="hidden" class="imageId" value="$image.id" name="itemImageList[0].id">
+                            		<input type="hidden" class="name" value="$image.name" name="itemImageList[0].name">
+                            		<input type="hidden" class="imagePath" value="$image.imagePath" name="itemImageList[0].imagePath">
+                            		<input type="hidden" class="canDefault" value="$image.canDefault" name="itemImageList[0].canDefault" value="0">
+                            		<img src="$imgUrl/$image.imagePath">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                            		<i class="glyphicon glyphicon-remove"></i>
+                                   </div>
+							#end
+						 #end
+						</div>
+						
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品德文介绍：</label>
+						<div class="col-md-9 row">
+						<input type="hidden" value="$!item.itemDesc.id" name="itemDesc.id">
+						<textarea class="form-control" id="gitemDesc" name="itemDesc.gitemDesc">$!item.itemDesc.gitemDesc</textarea>
+						</div>
+                        </div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品中文介绍：</label>
+						<div class="col-md-9 row">
+						<textarea class="form-control" id="citemDesc" name="itemDesc.citemDesc">$!item.itemDesc.citemDesc</textarea>
+					    </div>	
+                     </div>
+					 </div>
+                    </div>
+			 </div>
+			 
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品产地：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="area" value="$!item.area" name="area" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品毛重：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="grossWeight"  value="$velocityTool.divideThousand($!item.grossWeight)" name="grossWeight" style="width:200px;display:inline-block;"><span>&nbsp;kg</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品体积：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gVolume" value="$velocityTool.divideThousand($!item.gVolume)" name="gVolume" style="width:200px;display:inline-block;"><span>&nbsp;平方米</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">进口税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="importRate" value="$!item.importRate" name="importRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">消费税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="consumptionRate" value="$!item.consumptionRate" name="consumptionRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">增值税率：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="vatRate" value="$!item.vatRate" name="vatRate" style="width:200px;display:inline-block;"><span>&nbsp%</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+	
+			   <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">发货方式：</label>
+						<div class="col-md-9 row">
+								 <label class="radio-inline"> <input type="radio" value="0"  name="deliveryWay" #if($item.deliveryWay==0) checked #end class="px"> <span class="lbl" >海外直邮</span></label>
+								 <label class="radio-inline"> <input type="radio" value="1"  #if($item.deliveryWay==1) checked #end name="deliveryWay" class="px"> <span class="lbl">保税仓</span></label>
+								 <label class="radio-inline"> <input type="radio" value="2"  #if($item.deliveryWay==2) checked #end name="deliveryWay" class="px"> <span class="lbl">其他</span></label>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row bscRow #if($!item.deliveryWay!=1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关货号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsNum" value="$!item.customsNum" name="customsNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			    <div class="row  bscRow #if($!item.deliveryWay!=1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">海关备案号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="customsBakNum" value="$!item.customsBakNum" name="customsBakNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			   <div class="row  bscRow #if($!item.deliveryWay!=1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">国检货号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gCheckNum" value="$!item.gCheckNum" name="gCheckNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row bscRow #if($!item.deliveryWay!=1) hidden #end">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">国检备案号：</label>
+						<div class="col-md-9 row">
+							<input type="text" class="form-control" id="gBakNum" value="$!item.gBakNum" name="gBakNum" style="width:200px;">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			
+		
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">物流价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="logisticsPrice"  id="logisticsPrice" name="logisticsPrice" value="$!item.logisticsPrice">
+							<input type="text" class="form-control"  readonly   id="logisticsPriceTemp" value="$velocityTool.formatMoney($!item.logisticsPrice)"  style="width:200px;display:inline-block;"><span>&nbsp¥</span>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">选择运费模板：</label>
+						<div class="col-md-9 row">
+							<select class="form-control" id="logisticsId" name="logisticsId" style="width:200px;">
+								#foreach($template in $templateList)
+                                <option value="$template.id" #if($item.logisticsId==$template.id) selected  #end>$template.name</option>
+								#end
+							</select>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+			   <div class="row" style="margin:20px 0px;">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<label class="col-md-3 control-label no-padding-right no-padding-left"></label>
+						<div class="col-md-9">
+						  <button class="btn btn-primary updateItemBtn" type="button">保存</button>
+						  <button class="btn btn-default" onclick="history.go(-1);">返回</button>
+						</div>
+					 </div>
+                    </div>
+			  </div>
+            </div>
+            </div>
+        </div>
+	</div>
+</form>
+
+<div id="imgBak" class="hidden">
+  	 <div class="imgArea">
+		<input type="hidden" class="name" name="itemImageList[0].name">
+		<input type="hidden" class="imagePath" name="itemImageList[0].imagePath">
+		<input type="hidden" class="canDefault" name="itemImageList[0].canDefault" value="0">
+		<img src="">
+        <i class="glyphicon glyphicon-ok"></i>
+		<i class="glyphicon glyphicon-remove"></i>
+      </div>
+</div>
+	<table id="paramBak" class="hidden">
+      #foreach($param in $!item.itemMutiParamList)
+    		<tr class="rule" data='$param.ruleName'>
+        		<input type="hidden" class="form-control paramId" name="itemMutiParamList[0].id" value="$!param.id">
+        		<input type="hidden" class="form-control colorName" name="itemMutiParamList[0].colorName" value="$!param.colorName">
+        		<input type="hidden" class="form-control ruleName" name="itemMutiParamList[0].ruleName" value='$param.ruleName'>
+				<input type="hidden" class="form-control canDefaultValue" name="itemMutiParamList[0].canDefault" value='$param.canDefault'>
+				<input type="hidden" class="form-control" name="itemMutiParamList[0].version" value='$param.version'>
+                <td><label class="radio-inline"><input type="radio" name="paramRadio" class="canDefault px"  #if($param.canDefault==1) checked #end ><span class="lbl">是</span></label></td>
+        		<td><input type="text"  class="form-control checkMpriceTemp"  value="$velocityTool.formatMoney($param.mPrice)"><input type="hidden" class="checkMprice" value="$param.mPrice" name="itemMutiParamList[0].mPrice"></td>
+        		<td><input type="text" readonly class="form-control form-control checkBuyPriceTemp"  value="$velocityTool.formatMoney($param.buyPrice)"><input type="hidden" class="checkBuyPrice" logisticsPriceTemp="$velocityTool.formatMoney($!item.logisticsPrice)" logisticsPrice="$!item.logisticsPrice"  value="$param.buyPrice" name="itemMutiParamList[0].buyPrice"></td>
+				<td><input type="text" class="form-control checkNum" name="itemMutiParamList[0].num" value="$param.num"></td>
+        		<td><input type="text" readonly name="itemMutiParamList[0].skuCode" value="$param.skuCode" class="form-control skuCode" style="width:85%;display:inline;margin-right:5px;"><i class="fa fa-minus deleteParamIcon" title="删除"></i></td>
+    		</tr>
+      #end
+  </table>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+<script src="/static/javascripts/jstree/jstree.min.js"></script>
+<script src="/static/javascripts/summernote/summernote.min.js"></script>
+<script src="/static/javascripts/summernote/lang/summernote-de-DE.min.js"></script>
+<script src="/static/javascripts/summernote/lang/summernote-zh-CN.min.js"></script>
+<script src="/static/javascripts/jquery.sumoselect.js"></script>
+<script src="/static/javascripts/page/goods-update.js"></script>
+
+<script>
+    var imgUrl="$imgUrl";
+	var tags='$tags';
+	var selectTagIds="$!selectTagIds";
+	var selectedParam='$!item.paramData';
+     init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/goods/list");
+	});
+</script>
+#end

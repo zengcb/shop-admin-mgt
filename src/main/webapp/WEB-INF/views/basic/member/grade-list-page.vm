@@ -1,0 +1,49 @@
+#set($layout="inc/blank.vm")
+<table class="table table-striped table-bordered table-hover sonnenjahrTable" >
+<thead>
+        <tr>
+          <th>序号</th>
+          <th>会员类型</th>
+          <th>条件</th>
+          <th>生效期限</th>
+          <th>操作</th>
+        </tr>
+		<tbody>
+		#if($pageInfo.size()==0)
+		<tr>
+			<td colspan="6" style="text-align:center">占无数据</td>
+		</tr>
+		#else
+		#foreach($obj in $pageInfo)
+        <tr>
+          <td>$velocityCount</td>
+          <td>$!obj.name</td>
+          <td>
+			#if($!obj.type=='0')
+				$!obj.moneyBegin - $!obj.moneyEnd比交易
+			#else
+				$!obj.moneyBegin - $!obj.moneyEnd元
+			#end
+		  </td>
+          <td>
+          #if($!obj.period!='' && $!obj.period==1)
+          	立即生效
+          #end
+          #if($!obj.period!='' && $!obj.period==2)
+          	次月生效
+          #end
+          #if($!obj.period!='' && $!obj.period==3)
+          	$!velocityTool.getTime($!obj.validate)
+          #end
+          
+          </td>
+          <td>
+          	<a class="edit"   href="/grade/update?id=$!obj.id">编辑</a>
+          	<!--<a class="delete" href="#" delId='$!obj.id'>删除</a>-->
+          </td>
+        </tr>
+        #end
+		#end
+      </tbody>
+      </thead>
+</table>

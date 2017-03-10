@@ -1,0 +1,180 @@
+#init("商品推荐管理",["系统管理","平台管理","商品推荐管理"])
+#define($css)
+<link rel="stylesheet" href="/static/javascripts/select2/css/select2.min.css" />
+ <style>
+	.imgArea{
+	position: relative;
+    width: 100px;
+    height: 100px;
+	display:inline-block;
+	cursor:pointer;
+	margin-right:10px;
+}
+	.imgArea .glyphicon-remove{
+	  top:2px;
+	  right:2px;
+	  font-size:14px;
+	  position:absolute;
+	}
+	.imgArea .glyphicon-remove:hover{
+	 color:#00c09e;
+	}
+	.imgArea .glyphicon-ok{
+	 display:none;
+	}
+	.imgArea.selected {
+	 border:2px solid #00c09e;
+	}
+	.imgArea img{
+	 width:100%;
+	 height:100%;
+	}
+	.selected .glyphicon-ok{
+    position: absolute;
+    margin: auto;
+    top: 45%;
+    left: 45%;
+	color:#00c09e;
+	display:inline-block;
+	font-size:16px;
+	}
+	.selected img{
+	 opacity: 0.5;
+	}
+	.checkbox label{
+	 display:inline-block;
+	 min-width:50px;
+	 margin-right:5px;
+	}
+	.checkbox input[type=checkbox]{
+	  margin-top:2px;
+	  margin-left:0px;
+	}
+	.has-error .help-block, .has-success .help-block{
+	 margin-top:6px;
+	}
+ </style>
+#end
+<form id="addItemForm" name="addItemForm">
+	<input type="hidden"  value="$type" name="type" id="type">
+	<input type="hidden"  value="$categoryCode" name="categoryCode" id="categoryCode">
+	<div class="col-md-12">
+
+
+        <div class="panel colourable">
+            <div class="panel-body">
+            <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">序号：</label>
+						<div class="col-md-9 row">
+							<input type="text"  name="sortFlag" id="sortFlag" class="form-control">
+						</div>
+						</div>
+					 </div>
+                    </div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+				  <div class="form-horizontal">
+				   <div class="form-group">
+					<label class="col-md-3 control-label no-padding-right no-padding-left">商品名称：</label>
+					<div class="col-md-9 row">
+						<input type="hidden" value="" name="itemName" id="itemName">
+					<select class="form-control" id="itemId" name="itemId">
+						<option value="">请选择</option>
+						#foreach($item in $itemList)
+                            <option value="$item.id">$item.name</option>
+                        #end						   
+                     </select>
+					</div>
+					</div>
+				 </div>
+                </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">商品URL：</label>
+						<div class="col-md-9 row">
+							 	<div class="imgArea" style="display:none;">
+                            		<input type="hidden"  value="$!item.itemPic" name="itemPic" id="itemPic">
+                            		<img src="$imgUrl/$!item.itemPic" id="itemPicSrc">
+                                  </div>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">购买价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="buyPrice" id="buyPriceVal" >
+							<input type="text" value=""  id="buyPrice" class="form-control" readonly>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">德国价：</label>
+						<div class="col-md-9 row">
+							<input type="hidden" name="gPrice" id="gPriceVal" >
+							<input type="text" value=""  id="gPrice" class="form-control" readonly >
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+			 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left"></label>
+						<div class="col-md-9 row">
+							<button class="btn btn-primary saveBtn" type="button">保存</button>
+							<button class="btn btn-default" onclick="history.go(-1);">返回</button>
+						</div>
+						</div>
+					 </div>
+                    </div>
+			 </div>
+            </div>
+            </div>
+        </div>
+
+	</div>
+</form>
+
+<div id="imgBak" class="hidden">
+  	 <div class="imgArea">
+		<input type="hidden" class="name" name="itemImageList[0].name">
+		<input type="hidden" class="imagePath" name="itemImageList[0].imagePath">
+		<input type="hidden" class="canDefault" name="itemImageList[0].canDefault" value="0">
+		<img src="">
+        <i class="glyphicon glyphicon-ok"></i>
+		<i class="glyphicon glyphicon-remove"></i>
+      </div>
+</div>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+
+<script src="/static/javascripts/select2/js/select2.full.min.js"></script>
+<script src="/static/javascripts/select2/js/i18n/zh-CN.js"></script>
+<script src="/static/javascripts/page/system/recommendation-add.js"></script>
+
+<script>
+     var imgUrl="$imgUrl"
+     init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/recommendation/list");
+	});
+</script>
+#end

@@ -1,0 +1,8 @@
+#init("规格参数",["商品管理","规格参数"])
+
+<div class="panel-body" style="padding-bottom:0px;"><button class="btn  btn-primary" id="toAddPage" >新增</button></div>
+<div class="panel-body" id="myTable"></div>
+
+#define($js)
+<script src="/static/javascripts/page/parameter-list.js"></script>
+#end

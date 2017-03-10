@@ -1,0 +1,129 @@
+#init("新建广告位",["广告位管理","广告位列表","新建广告位"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <style>
+	.imgArea{
+	position: relative;
+    width: 100px;
+    height: 100px;
+	display:inline-block;
+	cursor:pointer;
+	margin-right:10px;
+}
+	.imgArea .glyphicon-remove{
+	  top:2px;
+	  right:2px;
+	  font-size:14px;
+	  position:absolute;
+	}
+	.imgArea .glyphicon-remove:hover{
+	 color:#00c09e;
+	}
+	.imgArea .glyphicon-ok{
+	 display:none;
+	}
+	.imgArea.selected {
+	 border:2px solid #00c09e;
+	}
+	.imgArea img{
+	 width:100%;
+	 height:100%;
+	}
+	.selected .glyphicon-ok{
+    position: absolute;
+    margin: auto;
+    top: 45%;
+    left: 45%;
+	color:#00c09e;
+	display:inline-block;
+	font-size:16px;
+	}
+	.selected img{
+	 opacity: 0.5;
+	}
+	.checkbox label{
+	 display:inline-block;
+	 width:50px;
+	}
+	.checkbox input[type=checkbox]{
+	  margin-top:2px;
+	  margin-left:0px;
+	}
+	.has-error .help-block, .has-success .help-block{
+	 margin-top:6px;
+	}
+ </style>
+#end
+<div class="panel colourable">
+<form class="form-horizontal" role="form" style="margin-top:10px" id="biaodan">
+  <input type="hidden"  id="adId" value="$!adId"  name="adId" class="form-control">
+  <input type="hidden"  id="adDetailId" value="$!adDetailId"  name="adDetailId" class="form-control">		
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">广告位置：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+    	 <input type="text"  id="name"  name="name" class="form-control" value="$!result.name">
+    </div>
+  </div>
+   <div class="form-group">
+    <label class="col-sm-2 control-label">广告排序：</label>
+    <div class="col-sm-6">
+    	<input type="text"  id="sort" name="sort" class="form-control" value="$!result.sort">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">广告链接：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+    	 <input type="text"  id="link" name="link" class="form-control" value="$!result.link">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">广告图片：</label>
+    <div class="col-sm-6" style="margin-top:4px">
+     <div class="btn btn-default btn-file" style="width:200px;text-align:center">
+		<span class="uploadTips">添加图片</span>
+		<input type="file" name="originalUpload" class="originalUpload" id="originalUpload">
+     </div>
+    </div>
+  </div>
+  	<div class="form-group">
+		<label class="col-md-2 control-label no-padding-right no-padding-left"></label>
+		<div class="col-md-9 row displayArea">
+			<div class="imgArea">
+				<input type="hidden" class="picName" name="picName" id="picName" value="$!result.picName">
+				
+				<input type="hidden" class="picUrl" name="picUrl"  id="picUrl" value="$!result.picUrl">
+				<img src="$!imgUrl/$!result.picUrl" id="picUrl"/>
+				<i class="glyphicon glyphicon-remove"></i>
+		      </div>
+		      <small class="help-block noPicError"   style="display: none;width:200px;">请上传商品图片</small>
+		</div>
+	</div>
+	<div id="imgBak" class="hidden">
+  	 <div class="imgArea">
+		<input type="hidden" class="picName" name="picName" id="picName">
+		
+		<input type="hidden" class="picUrl" name="picUrl"  id="picUrl">
+		<img src="" id="picUrl"/>
+        <i class="glyphicon glyphicon-ok"></i>
+		<i class="glyphicon glyphicon-remove"></i>
+      </div>
+</div>
+    <div class="form-group">
+    	<label  class="col-sm-2 control-label"></label>
+    <div class="col-sm-10 "  style="margin-top:4px" >
+		<button type="button" class="btn btn-primary" id="modifyAdDetail" >编辑广告位</button>
+		<button type="button" class="btn btn-default" onclick="window.location='/addetail?adId=$!adId'">返回</button>
+    </div>
+    </div>
+</form>
+</div>
+#define($js)
+<script src="/static/javascripts/ajaxfileupload.js"></script>
+<script src="/static/javascripts/page/ad/addetail-update.js"></script>
+
+<script>
+	init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/ad");
+	});
+</script>
+#end

@@ -1,0 +1,61 @@
+#init("系统术语",["系统管理","系统术语"])
+
+#define($css)
+#end
+<div class="panel colourable">
+ 
+<div class="panel-body">
+<div class="col-md-12 col-sm-12" style="margin-top:20px">
+     <div id="record">
+     </div>
+ </div>    
+ <div>           
+</div>
+</div>
+</div>
+
+#define($js)
+
+<script >
+	//删除事件
+	$(function(){
+		
+function loadMemerPage(){
+	var jsonData={
+			
+	}
+	
+	$("#record").pagination({
+		url:"/system/syskey/page",
+		paramJson:jsonData
+	})
+	
+}
+
+	$(function(){
+		loadMemerPage();
+	})
+
+		$(document).delegate(".del","click",function(){
+			var id=$(this).attr("value");
+			$.ajax({
+				url:"/system/fare/del",
+				type:'POST',
+				data:{
+					id:id
+				},
+				success:function(data){
+						if(data.status=="ok"){
+		                $.msg("删除成功");
+						window.location.reload();
+					}else{
+					   $.err(data.status);
+		            }
+				}
+			})
+		})
+		
+		
+	})
+</script>
+#end

@@ -1,0 +1,302 @@
+#init("",["会员管理","会员列表","会员编辑"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+#end
+<style>
+	.block{margin:10px 10px}
+	.align-left{
+	  text-align: left !important;
+	  font-weight: normal !important;
+	}
+</style>
+
+
+<div class="col-md-12">
+
+
+          <div class="panel colourable">
+			  <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">基本信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+            <div class="panel-body">
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">昵称：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!reuslt.nikeName</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+				 <div class="row">
+				     <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">性别：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							     #if($!result.sex==0)
+                            	  	男
+                            	  #else
+                            	  	女
+                            	  #end
+							
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				 </div>
+				 <div class="row">
+				     <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">会员类型：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							     $!result.gradeName
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				 </div>
+			</div>
+</div>
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">注册信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+			<div class="panel-body">
+				<div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">登陆类型：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							 #if($!result.thirdType=='qq')
+							  QQ
+							 #end
+							 #if($!result.thirdType=='wechat')
+							  微信
+							 #end
+							 #if($!result.thirdType=='mobile'||!$!result.thirdType)
+    		                                             手机号
+			                 #end
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">会员名：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!result.name</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+				 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">手机号码：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!result.mobile</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+				 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">邮箱：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!result.email</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+				 <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">注册时间：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-12 control-label align-left">$velocityTool.getTime($!result.registerTime)</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			     </div>
+			</div>
+</div>
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">认证信息</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+			<div class="panel-body">
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">真实姓名：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!result.name</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">身份证号：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">$!velocityTool.getidentityNum($!result.identityNum)</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">身份证正面：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							   #if(!$result.identityFrontUrl)
+                        	  	未上传
+                        	  #else
+                        		  已上传
+                        	  #end
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">身份证反面：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							    #if(!$result.identityBackUrl)
+                        	  	未上传
+                        	   #else
+                        	   	已上传
+                        	   #end
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+				  <div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">手持身份证：</label>
+						<div class="col-md-9 row">
+							<label class="col-md-3 control-label align-left">
+							     #if(!$result.identityHandUrl)
+                              		未上传
+                            	  #else
+                            	  	已上传
+                            	  #end
+							</label>
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+			</div>
+</div>
+<div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><b id="dept_name">权限设置</b></span>
+                 <div class="panel-heading-controls">
+                </div>
+            </div>
+			<div class="panel-body">
+				<div class="row">
+                   <div class="col-md-6">
+					  <div class="form-horizontal">
+						<div class="form-group">
+						<label class="col-md-3 control-label no-padding-right no-padding-left">会员等级：</label>
+						<div class="col-md-9 row">
+                          	<span id="grade">$!resultgradeName</span>
+                              #if($grades.size()==0)
+                        		占无等级，请管理员自行设置
+                              #else
+                              #foreach($obj in $grades)
+                              	 <label class="radio-inline">
+                        	  		<input type="radio" name="gradeName" class="px"  gradeName='$obj.name' gradeId="$obj.id"> <span class="lbl">$obj.name</span>
+                        	 	 </label>
+                              #end
+                          #end
+						</div>
+						</div>
+					 </div>
+                   </div>
+				
+			      </div>
+			</div>
+</div>
+    <div class="form-group">
+    	<label  class="col-sm-3 control-label"></label>
+    <div class="col-sm-9 "  style="margin-top:4px" >
+		<button type="button" class="btn btn-primary" id="add" value="$result.id">确定</button>
+		<button type="button" class="btn btn-default" onclick="window.location='/member'">取消</button>
+    </div>
+    </div>
+  </div>
+</form>
+</div>
+#define($js)
+<script src="/static/javascripts/page/member/member-update.js"></script>
+<script>
+	 init.push(function(){
+        window.PixelAdmin.MainMenu.prototype.detectActiveItem("/member");
+	});
+
+
+	var gn="$!result.gradeName";
+	if(gn.length>0){
+		$("input[gradename='"+gn+"']").attr("checked","true")
+	}
+</script>
+#end

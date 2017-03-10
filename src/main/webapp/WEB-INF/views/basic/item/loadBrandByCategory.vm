@@ -1,0 +1,5 @@
+#set($layout="inc/blank.vm")
+<option value="">请选择</option>
+#foreach($brand in $brandList)
+    <option value="$brand.id">$brand.name</option>
+#end

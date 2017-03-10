@@ -1,0 +1,14 @@
+#init("品牌列表",["商品管理","品牌列表"])
+#define($css)
+ <link rel="stylesheet" href="/static/javascripts/jstree/themes/default/style.min.css" />
+ <script>
+ var treeData=$treeData;
+</script>
+#end
+<div class="col-md-6 col-sm-6">
+     <div id="brandTree"></div>
+</div>
+#define($js)
+<script src="/static/javascripts/jstree/jstree.min.js"></script>
+<script src="/static/javascripts/page/brand-list.js"></script>
+#end

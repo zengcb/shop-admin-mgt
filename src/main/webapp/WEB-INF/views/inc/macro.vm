@@ -1,0 +1,95 @@
+#macro(init $pageTitle $breadCrumbs)
+    #if($pageTitle != "")
+        #set($page_header="<div class='page-header'><h1>" + $pageTitle + "</h1></div>")
+    #end
+
+    #set($bread_crumbs=
+        "<ul class='breadcrumb breadcrumb-page'><div class='breadcrumb-label text-light-gray'>您当前的位置: </div><li><a href='javascript:void(0)'>后台管理平台</a></li>")
+
+    #set($index = 0)
+
+    #foreach($crumb in $breadCrumbs)
+        #set($index = $index + 1)
+        #if($index < $breadCrumbs.size())
+            #set($bread_crumbs="$bread_crumbs
+            <li>$crumb</li>")
+        #else
+            #set($bread_crumbs="$bread_crumbs
+            <li class='active'>$crumb</li>")
+            #set($page_title=$crumb + "_后台管理系统")
+        #end
+    #end
+
+    #set($bread_crumbs="$bread_crumbs</ul>")
+#end
+
+#macro(pageNation $data)
+	
+    	#if($data.recordList.size() > 0)
+			<div class="row DTTTFooter">
+     <div id="pagination">
+			#set($prevPage = ${data.currentPage} - 1)
+    		#set($nextnPage = ${data.currentPage} + 1)
+			<a  
+				#if($data.currentPage==1)
+				class="disabledPage" disabled="disabled" href="javascript:void(0)"
+				#else
+				class="toFirstPage"	pageNum="1"
+				#end 
+			>首页</a>
+			<a 
+				#if($data.currentPage ==1)
+					class="disabledPage" disabled="disabled" href="javascript:void(0)"
+				#else
+				 class="toPrePage" pageNum="$prevPage"
+				#end 
+            > 上一页 </a>
+			#set($offsetStart=1)
+			#set($offsetEnd=${data.pageCount})
+			#if($offsetEnd > 5)
+				#if($offsetEnd - ${data.currentPage} >= 2)
+					#set($offsetEnd = ${data.currentPage} + 2)
+				#end
+				#set($offsetStart = $offsetEnd - 4)
+				#if($offsetStart < 1)
+					#set($offsetStart = 1)
+					#set($offsetEnd = 5)
+				#end
+			#end
+			#foreach($foo in [$!offsetStart..$offsetEnd])
+				<a  pageNum="$foo"   #if($foo==${data.currentPage}) class="disabledPage" #else  class="toTargetPage" #end> $foo </a>
+			#end
+			<a 
+				#if($data.currentPage == $data.pageCount)
+					class="disabledPage" disabled="disabled"
+				#else
+				 class="toNextPage" pageNum="$nextnPage"
+				#end 
+            > 下一页
+			<a
+				#if($data.currentPage == $data.pageCount)
+				  class="disabledPage"	disabled="disabled" href="javascript:void(0)"
+				#else
+				 class="toLastPage" pageNum="$data.pageCount"
+				#end 
+				>尾页</a> 
+			当前第$!{data.currentPage}页,共$!{data.pageCount}页, 到第<input id="pageNation_pageNum" class="goPage" style="width:38px" type="text" value="" onblur="if(!/^[0-9]{0,}[1-9][0-9]{0,}$/.test(this.value)){ this.style.borderColor='red'} else{ this.style.borderColor='#e3e3e3'}"/>页
+			<a href="javascript:void(0);" class="toTargetPageBtn">确定</a>
+		#end
+	</div>
+	<div  p_currentpagenum="$!{data.currentPage}" p_totalsize="$!{data.totalCount}"  p_totalpagesnum="$!{data.pageCount}" p_pagesize="$!{data.numPerPage}" style="display:none" class="paginator"></div>
+</div>
+#end
+
+#macro(showEmpty $data $colspan)
+#if($data == '' || $data.recordList.size() == 0)
+<tr>
+    <td colspan="${colspan}">
+        <div class="padding-10" align="center">
+            <h1 style="color: #999">没有可以用来显示的数据</h1>
+        </div>
+    </td>
+</tr>
+#end
+#end
+

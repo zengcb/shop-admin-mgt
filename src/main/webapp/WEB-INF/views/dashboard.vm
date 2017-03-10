@@ -1,0 +1,6 @@
+#init("",["工作台"])
+
+<script>
+    init.push(function () {
+    })
+</script>
